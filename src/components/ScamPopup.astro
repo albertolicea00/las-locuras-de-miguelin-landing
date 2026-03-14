@@ -1,0 +1,66 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<!-- Scam Warning Popup (once per session) -->
+<div id="scam-popup" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 hidden">
+  <div class="bg-secondary rounded-2xl p-8 max-w-md w-full border-2 border-red-500/50 shadow-2xl shadow-red-500/10 relative animate-float" style="animation-duration: 3s;">
+    <!-- Close button -->
+    <button id="scam-popup-close" class="absolute top-4 right-4 text-white/50 hover:text-white transition">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+
+    <!-- Warning icon -->
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-500/20 border-2 border-red-500/40 mb-4">
+        <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+      </div>
+      <h3 class="text-red-400 font-display text-2xl">{t.scamWarning.title}</h3>
+    </div>
+
+    <!-- Message -->
+    <p class="text-white/80 text-center leading-relaxed mb-4">{t.scamWarning.message}</p>
+    <p class="text-white/50 text-sm text-center mb-2">{t.scamWarning.tip}</p>
+    <p class="text-white/30 text-xs text-center mb-6">{t.scamWarning.report}</p>
+
+    <!-- Action -->
+    <button id="scam-popup-ok" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition text-lg">
+      {lang === "es" ? "Entendido" : "Got it"}
+    </button>
+  </div>
+</div>
+
+<script>
+  const popup = document.getElementById("scam-popup");
+  const closeBtn = document.getElementById("scam-popup-close");
+  const okBtn = document.getElementById("scam-popup-ok");
+
+  function closePopup() {
+    popup?.classList.add("hidden");
+    sessionStorage.setItem("scam-warning-seen", "1");
+  }
+
+  // Show popup if not seen this session
+  if (!sessionStorage.getItem("scam-warning-seen")) {
+    // Small delay so the page loads first
+    setTimeout(() => {
+      popup?.classList.remove("hidden");
+    }, 1500);
+  }
+
+  closeBtn?.addEventListener("click", closePopup);
+  okBtn?.addEventListener("click", closePopup);
+
+  // Close on backdrop click
+  popup?.addEventListener("click", (e) => {
+    if (e.target === popup) closePopup();
+  });
+</script>

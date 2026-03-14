@@ -1,0 +1,72 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
+import { getSiteData } from "../data/site";
+import type { YouTubeVideo } from "../services/youtube";
+
+interface Props {
+  lang: Locale;
+  liveVideos?: YouTubeVideo[];
+}
+
+const { lang, liveVideos = [] } = Astro.props;
+const t = useTranslations(lang);
+const data = getSiteData(lang);
+const hasLive = liveVideos.length > 0;
+---
+
+<section id="episodios" class="py-20 bg-secondary/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="text-accent font-medium text-sm tracking-widest uppercase">{t.sections.viralEpisodesLabel}</span>
+      <h2 class="section-title text-white mt-2">{t.sections.viralEpisodes}</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {hasLive ? (
+        liveVideos.map((video) => (
+          <a href={`https://www.youtube.com/watch?v=${video.id}`} target="_blank" rel="noopener noreferrer" class="card-episode cursor-pointer group block">
+            <div class="relative overflow-hidden">
+              <img src={video.thumbnail} alt={video.title} class="w-full aspect-video object-cover group-hover:scale-110 transition duration-500" loading="lazy" />
+              <div class="absolute top-3 left-3 bg-primary text-white text-xs font-bold px-2 py-1 rounded-lg">
+                {video.viewCount} {t.characterPage.views}
+              </div>
+              <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm">
+                {video.duration}
+              </div>
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 flex items-center justify-center transition">
+                <div class="w-12 h-12 bg-primary/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                  <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h3 class="text-white font-semibold mt-1 line-clamp-2">{video.title}</h3>
+              <p class="text-white/40 text-sm mt-1">👁 {video.viewCount} · ❤️ {video.likeCount}</p>
+            </div>
+          </a>
+        ))
+      ) : (
+        data.viralEpisodes.map((ep) => (
+          <div class="card-episode cursor-pointer group">
+            <div class="relative overflow-hidden">
+              <img src={ep.thumbnail} alt={ep.title} class="w-full aspect-video object-cover group-hover:scale-110 transition duration-500" />
+              <div class="absolute top-3 left-3 bg-primary text-white text-xs font-bold px-2 py-1 rounded-lg">
+                {ep.views} {t.characterPage.views}
+              </div>
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 flex items-center justify-center transition">
+                <div class="w-12 h-12 bg-primary/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                  <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <p class="text-white/50 text-xs">EP {ep.number}</p>
+              <h3 class="text-white font-semibold mt-1">{ep.title}</h3>
+              <p class="text-white/40 text-sm mt-1">🎤 {ep.guest}</p>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  </div>
+</section>

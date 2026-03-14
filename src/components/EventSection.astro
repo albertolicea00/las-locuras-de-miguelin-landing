@@ -1,0 +1,35 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
+import { getSiteData } from "../data/site";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const data = getSiteData(lang);
+const event = data.nextEvent;
+---
+
+<section id="eventos" class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="text-neon-yellow font-medium text-sm tracking-widest uppercase">{t.sections.eventLabel}</span>
+      <h2 class="section-title text-white mt-2">{t.sections.event}</h2>
+    </div>
+    <div class="max-w-2xl mx-auto event-card p-8 md:p-12 text-center opacity-60">
+      <div class="inline-block px-4 py-1 bg-white/10 text-white/50 rounded-full text-sm font-medium mb-4">
+        {lang === "es" ? "Proximamente" : "Coming Soon"}
+      </div>
+      <h3 class="font-display text-4xl md:text-5xl text-white/50 mb-3">{event.title}</h3>
+      <p class="text-white/30 text-lg mb-2">{event.venue}</p>
+      <p class="text-white/20 mb-2">{event.city}</p>
+      <p class="text-white/30 max-w-md mx-auto mb-8">{event.description}</p>
+      <button disabled class="inline-block bg-white/10 text-white/30 font-semibold px-8 py-4 rounded-xl cursor-not-allowed text-lg border border-white/10">
+        {lang === "es" ? "Proximamente" : "Coming Soon"}
+      </button>
+    </div>
+  </div>
+</section>

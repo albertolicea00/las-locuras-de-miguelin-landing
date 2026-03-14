@@ -1,0 +1,73 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
+import { getSiteData } from "../data/site";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const data = getSiteData(lang);
+---
+
+<section id="soundboard" class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="text-primary font-medium text-sm tracking-widest uppercase">{t.sections.soundboardLabel}</span>
+      <h2 class="section-title text-white mt-2">{t.sections.soundboard}</h2>
+      <p class="text-white/50 mt-3">{t.sections.soundboardSubtitle}</p>
+    </div>
+    <div class="max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4">
+      {data.soundboard.map((sound) => (
+        <button class="sound-btn text-center" data-sound-text={sound.text}>
+          <span class="block text-2xl mb-1">{sound.emoji}</span>
+          <span>{sound.text}</span>
+        </button>
+      ))}
+    </div>
+
+    <!-- Meme Generator -->
+    <div class="max-w-md mx-auto mt-12 text-center">
+      <button
+        id="locura-btn"
+        class="bg-gradient-to-r from-primary to-neon-purple hover:from-primary/80 hover:to-neon-purple/80 text-white font-display text-2xl px-8 py-5 rounded-2xl transition transform hover:scale-105 neon-glow"
+      >
+        {t.actions.generateLocura}
+      </button>
+      <div id="locura-result" class="mt-6 p-6 bg-secondary rounded-2xl border border-primary/30 hidden">
+        <p id="locura-text" class="text-white text-xl font-display"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ locuras: t.locuras }}>
+  // Soundboard
+  document.querySelectorAll("[data-sound-text]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const text = btn.getAttribute("data-sound-text");
+      btn.classList.add("bg-primary", "scale-95");
+      setTimeout(() => btn.classList.remove("bg-primary", "scale-95"), 300);
+      if ("speechSynthesis" in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "es-ES";
+        utterance.rate = 1.2;
+        utterance.pitch = 1.1;
+        speechSynthesis.speak(utterance);
+      }
+    });
+  });
+
+  // Meme Generator
+  const locuraBtn = document.getElementById("locura-btn");
+  const locuraResult = document.getElementById("locura-result");
+  const locuraText = document.getElementById("locura-text");
+
+  locuraBtn?.addEventListener("click", () => {
+    const random = Math.floor(Math.random() * locuras.length);
+    if (locuraText) locuraText.textContent = locuras[random];
+    locuraResult?.classList.remove("hidden");
+  });
+</script>

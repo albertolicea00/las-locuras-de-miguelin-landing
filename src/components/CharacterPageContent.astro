@@ -1,0 +1,136 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations, getLocalizedPath } from "../i18n/utils";
+import type { Character } from "../data/site";
+import { getSiteData } from "../data/site";
+import { INSTAGRAM_HANDLES } from "../data/social";
+import InstagramPostsGrid from "./InstagramPostsGrid.astro";
+import type { InstagramPost } from "../services/instagram";
+
+interface Props {
+  lang: Locale;
+  character: Character;
+  profilePicUrl?: string;
+  instagramPosts?: InstagramPost[];
+}
+
+const { lang, character: p, profilePicUrl, instagramPosts = [] } = Astro.props;
+const t = useTranslations(lang);
+const data = getSiteData(lang);
+const otherCharacters = data.characters.filter((c) => c.id !== p.id);
+
+const instagramHandle = INSTAGRAM_HANDLES[p.id] || "";
+const hasTiktok = p.tiktok && p.tiktok !== "#";
+const hasYoutube = !!p.youtube;
+const hasFacebook = !!p.facebook;
+const pic = profilePicUrl || p.photo;
+
+// Build social links for floating bar
+const socials: { type: string; url: string; label: string }[] = [];
+if (instagramHandle) socials.push({ type: "instagram", url: p.instagram, label: `@${instagramHandle}` });
+if (hasYoutube) socials.push({ type: "youtube", url: p.youtube!, label: "YouTube" });
+if (hasFacebook) socials.push({ type: "facebook", url: p.facebook!, label: "Facebook" });
+if (hasTiktok) socials.push({ type: "tiktok", url: p.tiktok, label: "TikTok" });
+---
+
+<!-- Floating Social Bar -->
+{socials.length > 0 && (
+  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 bg-dark/90 backdrop-blur-xl border border-white/10 rounded-full px-4 py-2 shadow-2xl shadow-black/50" id="floating-social">
+    <img src={pic} alt={p.name} class="w-8 h-8 rounded-full object-cover border-2" style={`border-color:${p.color}`} />
+    <span class="text-white font-semibold text-sm hidden sm:inline">{p.name}</span>
+    <div class="w-px h-5 bg-white/20 mx-1"></div>
+    {socials.map((s) => (
+      <a href={s.url} target="_blank" rel="noopener noreferrer" class="social-float-btn group relative" data-type={s.type} title={s.label}>
+        {s.type === "instagram" && (
+          <div class="w-9 h-9 rounded-full bg-white/5 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 flex items-center justify-center transition">
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          </div>
+        )}
+        {s.type === "youtube" && (
+          <div class="w-9 h-9 rounded-full bg-white/5 hover:bg-red-600 flex items-center justify-center transition">
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </div>
+        )}
+        {s.type === "facebook" && (
+          <div class="w-9 h-9 rounded-full bg-white/5 hover:bg-blue-600 flex items-center justify-center transition">
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </div>
+        )}
+        {s.type === "tiktok" && (
+          <div class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/20 flex items-center justify-center transition">
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.72a8.19 8.19 0 0 0 4.76 1.52v-3.4a4.85 4.85 0 0 1-1-.15z"/></svg>
+          </div>
+        )}
+      </a>
+    ))}
+  </div>
+)}
+
+<!-- Character Hero -->
+<section class="min-h-[70vh] flex items-center relative overflow-hidden pt-24">
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 left-10 w-96 h-96 rounded-full blur-3xl animate-float" style={`background:${p.color}15`}></div>
+    <div class="absolute bottom-20 right-10 w-72 h-72 bg-accent/10 rounded-full blur-3xl animate-float" style="animation-delay: 1.5s;"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Photo -->
+      <div class="order-2 lg:order-1">
+        <div class="aspect-[3/4] max-w-md mx-auto rounded-3xl overflow-hidden relative" style={`background: linear-gradient(135deg, ${p.color}20, transparent); border: 2px solid ${p.color}40`}>
+          <img src={pic} alt={p.name} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-transparent"></div>
+        </div>
+      </div>
+      <!-- Info -->
+      <div class="order-1 lg:order-2">
+        <a href={getLocalizedPath("/personajes", lang)} class="inline-flex items-center gap-2 text-white/50 hover:text-primary text-sm mb-6 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          {t.actions.backToCrew}
+        </a>
+        <div class="inline-block px-3 py-1 rounded-full text-xs font-bold text-white mb-4" style={`background:${p.color}`}>{p.role}</div>
+        <h1 class="font-display text-6xl md:text-7xl lg:text-8xl text-white leading-none">{p.name.toUpperCase()}</h1>
+        <p class="text-white/50 text-lg mt-4 italic">{p.quote}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bio -->
+<section class="py-16">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="font-display text-3xl text-white mb-6">{t.characterPage.about} <span class="text-primary">{p.name.toUpperCase()}</span></h2>
+    <p class="text-white/60 text-lg leading-relaxed">{p.bio}</p>
+  </div>
+</section>
+
+<!-- Instagram Posts -->
+<InstagramPostsGrid
+  lang={lang}
+  posts={instagramPosts}
+  instagramUrl={p.instagram}
+  characterName={p.name}
+  characterColor={p.color}
+/>
+
+<!-- Other Crew -->
+<section class="py-16 pb-32">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="font-display text-3xl text-white mb-8">{t.characterPage.otherCrew}</h2>
+    <div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4">
+      {otherCharacters.map((other) => (
+        <a href={getLocalizedPath(`/personajes/${other.id}`, lang)} class="card-crew group block shrink-0 w-36">
+          <div class="aspect-square bg-gradient-to-br from-white/5 to-white/0 relative overflow-hidden rounded-xl">
+            <img src={other.photo} alt={other.name} class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="absolute inset-0 items-center justify-center hidden"><span class="text-4xl">🎭</span></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent"></div>
+          </div>
+          <div class="p-2 text-center">
+            <h3 class="font-display text-sm text-white group-hover:text-primary transition">{other.name}</h3>
+            <p class="text-white/40 text-[10px]">{other.role}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

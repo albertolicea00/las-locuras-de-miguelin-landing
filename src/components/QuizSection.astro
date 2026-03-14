@@ -1,0 +1,120 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations, getLocalizedPath } from "../i18n/utils";
+import { getSiteData } from "../data/site";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const data = getSiteData(lang);
+---
+
+<section class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="inline-block bg-gradient-to-r from-primary/20 to-neon-purple/20 border border-primary/30 rounded-2xl px-8 py-6">
+      <p class="text-white font-display text-2xl md:text-3xl">{t.crewPage.quizTitle}</p>
+      <p class="text-white/50 text-sm mt-2">{t.crewPage.quizSubtitle}</p>
+      <button
+        id="quiz-start-btn-main"
+        class="mt-4 bg-primary hover:bg-primary/80 text-white font-semibold px-8 py-3 rounded-xl transition text-lg neon-glow"
+      >
+        {t.actions.takeQuiz}
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Quiz Modal -->
+<div id="quiz-modal-main" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 hidden">
+  <div class="bg-secondary rounded-2xl p-8 max-w-lg w-full border border-white/10 relative">
+    <button id="quiz-close-btn-main" class="absolute top-4 right-4 text-white/50 hover:text-white">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <div id="quiz-question-container-main"></div>
+    <div id="quiz-result-container-main" class="hidden text-center"></div>
+  </div>
+</div>
+
+<script define:vars={{
+  questions: t.quiz.questions,
+  characters: data.characters.map(c => ({ id: c.id, name: c.name, role: c.role, quote: c.quote })),
+  resultIntro: t.crewPage.quizResultIntro,
+  resultPrefix: t.crewPage.quizResultPrefix,
+  resultSuffix: t.crewPage.quizResultSuffix,
+  tryAgainText: t.actions.tryAgain,
+  viewProfileText: t.actions.viewProfile,
+  questionLabel: lang === "es" ? "pregunta" : "question",
+  ofLabel: lang === "es" ? "de" : "of",
+  basePath: lang === "es" ? "/personajes/" : "/en/personajes/",
+}}>
+  const modal = document.getElementById("quiz-modal-main");
+  const questionContainer = document.getElementById("quiz-question-container-main");
+  const resultContainer = document.getElementById("quiz-result-container-main");
+  let step = 0;
+  let scores = {};
+
+  function renderQuestion() {
+    const q = questions[step];
+    questionContainer.innerHTML = `
+      <p class="text-primary text-sm font-medium">${questionLabel} ${step + 1} ${ofLabel} ${questions.length}</p>
+      <h3 class="text-white font-display text-2xl mt-2">${q.q}</h3>
+      <div class="mt-6 space-y-3">
+        ${q.opts.map((opt) => `
+          <button data-character="${opt.character}" class="quiz-opt-main w-full text-left bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary rounded-xl px-5 py-3 text-white transition">
+            ${opt.text}
+          </button>
+        `).join("")}
+      </div>
+    `;
+    questionContainer.querySelectorAll(".quiz-opt-main").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const char = btn.getAttribute("data-character");
+        scores[char] = (scores[char] || 0) + 1;
+        if (step < questions.length - 1) {
+          step++;
+          renderQuestion();
+        } else {
+          showResult();
+        }
+      });
+    });
+  }
+
+  function showResult() {
+    const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+    const character = characters.find(c => c.id === winner);
+    questionContainer.classList.add("hidden");
+    resultContainer.classList.remove("hidden");
+    resultContainer.innerHTML = `
+      <div class="text-6xl mb-4">🎭</div>
+      <p class="text-white/50 text-sm">${resultIntro}</p>
+      <h3 class="text-white font-display text-4xl mt-2">${resultPrefix} ${character.name.toUpperCase()}${resultSuffix}</h3>
+      <p class="text-primary font-medium mt-2">${character.role}</p>
+      <p class="text-white/50 mt-3 italic">${character.quote}</p>
+      <div class="mt-6 flex gap-3 justify-center">
+        <button id="quiz-retry-main" class="bg-white/10 hover:bg-white/20 text-white px-5 py-2 rounded-xl transition text-sm">${tryAgainText}</button>
+        <a href="${basePath}${character.id}" class="bg-primary hover:bg-primary/80 text-white px-5 py-2 rounded-xl transition text-sm">${viewProfileText}</a>
+      </div>
+    `;
+    document.getElementById("quiz-retry-main")?.addEventListener("click", resetQuiz);
+  }
+
+  function resetQuiz() {
+    step = 0;
+    scores = {};
+    questionContainer.classList.remove("hidden");
+    resultContainer.classList.add("hidden");
+    renderQuestion();
+  }
+
+  document.getElementById("quiz-start-btn-main")?.addEventListener("click", () => {
+    resetQuiz();
+    modal?.classList.remove("hidden");
+  });
+  document.getElementById("quiz-close-btn-main")?.addEventListener("click", () => {
+    modal?.classList.add("hidden");
+  });
+</script>

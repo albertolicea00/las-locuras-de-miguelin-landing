@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { useTranslations } from "../i18n/utils";
+import { fetchAllYouTubeData } from "../services/youtube";
+import { fetchAllProfilePics, fetchAllInstagramData } from "../services/instagram";
+import { INSTAGRAM_HANDLES } from "../data/social";
+import { getSiteData } from "../data/site";
+import HeroSection from "../components/HeroSection.astro";
+import LatestEpisodeSection from "../components/LatestEpisodeSection.astro";
+import ViralEpisodesSection from "../components/ViralEpisodesSection.astro";
+import CrewSection from "../components/CrewSection.astro";
+import EventSection from "../components/EventSection.astro";
+import SponsorsSection from "../components/SponsorsSection.astro";
+// import SocialSection from "../components/SocialSection.astro"; // Hidden for now
+import ScamPopup from "../components/ScamPopup.astro";
+
+const lang = "es" as const;
+const t = useTranslations(lang);
+const data = getSiteData(lang);
+
+// Fetch real-time data at build time
+const ytData = await fetchAllYouTubeData();
+const allChars = data.characters.map((c) => ({ id: c.id, instagramHandle: INSTAGRAM_HANDLES[c.id] || "" }));
+await fetchAllInstagramData(allChars);
+const profilePics = await fetchAllProfilePics(allChars);
+---
+
+<BaseLayout title={t.meta.title} description={t.meta.description} lang={lang}>
+  <HeroSection lang={lang} channelInfo={ytData.channel} />
+  <LatestEpisodeSection lang={lang} liveVideo={ytData.latestVideos[0] ?? null} />
+  <ViralEpisodesSection lang={lang} liveVideos={ytData.popularVideos} />
+  <CrewSection lang={lang} profilePics={profilePics} />
+  <EventSection lang={lang} />
+  <SponsorsSection lang={lang} />
+  <!-- SocialSection hidden for now -->
+  <ScamPopup lang={lang} />
+</BaseLayout>

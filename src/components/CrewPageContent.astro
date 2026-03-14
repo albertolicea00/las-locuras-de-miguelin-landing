@@ -1,0 +1,168 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations, getLocalizedPath } from "../i18n/utils";
+import { getSiteData } from "../data/site";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const data = getSiteData(lang);
+---
+
+<!-- Hero -->
+<section class="pt-32 pb-16 relative overflow-hidden">
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 right-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float"></div>
+    <div class="absolute bottom-0 left-10 w-72 h-72 bg-neon-purple/10 rounded-full blur-3xl animate-float" style="animation-delay: 1s;"></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+    <span class="text-primary font-medium text-sm tracking-widest uppercase">{t.sections.crewLabel}</span>
+    <h1 class="font-display text-6xl md:text-8xl text-white mt-4">{t.crewPage.title}</h1>
+    <p class="text-white/50 text-lg mt-4 max-w-2xl mx-auto">{t.crewPage.subtitle}</p>
+  </div>
+</section>
+
+<!-- Quiz CTA -->
+<section class="pb-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="inline-block bg-gradient-to-r from-primary/20 to-neon-purple/20 border border-primary/30 rounded-2xl px-8 py-4">
+      <p class="text-white font-display text-xl">{t.crewPage.quizTitle}</p>
+      <p class="text-white/50 text-sm mt-1">{t.crewPage.quizSubtitle}</p>
+      <button
+        id="quiz-start-btn"
+        class="mt-3 bg-primary hover:bg-primary/80 text-white font-semibold px-6 py-2 rounded-xl transition text-sm"
+      >
+        {t.actions.takeQuiz}
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Quiz Modal -->
+<div id="quiz-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 hidden">
+  <div class="bg-secondary rounded-2xl p-8 max-w-lg w-full border border-white/10 relative">
+    <button id="quiz-close-btn" class="absolute top-4 right-4 text-white/50 hover:text-white">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <div id="quiz-question-container"></div>
+    <div id="quiz-result-container" class="hidden text-center"></div>
+  </div>
+</div>
+
+<!-- Crew Grid -->
+<section class="py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-8">
+      {data.characters.map((character) => (
+        <a href={getLocalizedPath(`/personajes/${character.id}`, lang)} class="card-crew group block relative">
+          <div class="aspect-[3/4] bg-gradient-to-br from-white/5 to-white/0 relative overflow-hidden">
+            <img src={character.photo} alt={character.name} class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="absolute inset-0 items-center justify-center hidden">
+              <span class="text-8xl">🎭</span>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/50 to-transparent"></div>
+            <div class="absolute top-4 right-4 bg-black/60 text-white/80 text-xs px-3 py-1 rounded-full backdrop-blur-sm font-medium">
+              {character.episodeCount} {t.characterPage.episodes.toLowerCase()}
+            </div>
+            <div class="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold text-white" style={`background:${character.color}`}>
+              {character.role}
+            </div>
+          </div>
+          <div class="p-6 relative -mt-16 z-10">
+            <h3 class="font-display text-3xl text-white group-hover:text-primary transition">{character.name}</h3>
+            <p class="text-white/40 text-sm mt-2 italic leading-relaxed">{character.quote}</p>
+            <p class="text-white/30 text-sm mt-3 line-clamp-2">{character.bio}</p>
+            <div class="mt-5 flex items-center gap-2 text-primary font-medium text-sm">
+              <span>{t.actions.viewFullProfile}</span>
+              <svg class="w-4 h-4 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script define:vars={{
+  questions: t.quiz.questions,
+  characters: data.characters.map(c => ({ id: c.id, name: c.name, role: c.role, quote: c.quote })),
+  resultIntro: t.crewPage.quizResultIntro,
+  resultPrefix: t.crewPage.quizResultPrefix,
+  resultSuffix: t.crewPage.quizResultSuffix,
+  tryAgainText: t.actions.tryAgain,
+  viewProfileText: t.actions.viewProfile,
+  questionLabel: "question",
+  ofLabel: "of",
+  basePath: lang === "es" ? "/personajes/" : "/en/personajes/",
+}}>
+  const modal = document.getElementById("quiz-modal");
+  const questionContainer = document.getElementById("quiz-question-container");
+  const resultContainer = document.getElementById("quiz-result-container");
+  let step = 0;
+  let scores = {};
+
+  function renderQuestion() {
+    const q = questions[step];
+    questionContainer.innerHTML = `
+      <p class="text-primary text-sm font-medium">${questionLabel} ${step + 1} ${ofLabel} ${questions.length}</p>
+      <h3 class="text-white font-display text-2xl mt-2">${q.q}</h3>
+      <div class="mt-6 space-y-3">
+        ${q.opts.map((opt, i) => `
+          <button data-character="${opt.character}" class="quiz-opt w-full text-left bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary rounded-xl px-5 py-3 text-white transition">
+            ${opt.text}
+          </button>
+        `).join("")}
+      </div>
+    `;
+    questionContainer.querySelectorAll(".quiz-opt").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const char = btn.getAttribute("data-character");
+        scores[char] = (scores[char] || 0) + 1;
+        if (step < questions.length - 1) {
+          step++;
+          renderQuestion();
+        } else {
+          showResult();
+        }
+      });
+    });
+  }
+
+  function showResult() {
+    const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+    const character = characters.find(c => c.id === winner);
+    questionContainer.classList.add("hidden");
+    resultContainer.classList.remove("hidden");
+    resultContainer.innerHTML = `
+      <div class="text-6xl mb-4">🎭</div>
+      <p class="text-white/50 text-sm">${resultIntro}</p>
+      <h3 class="text-white font-display text-4xl mt-2">${resultPrefix} ${character.name.toUpperCase()}${resultSuffix}</h3>
+      <p class="text-primary font-medium mt-2">${character.role}</p>
+      <p class="text-white/50 mt-3 italic">${character.quote}</p>
+      <div class="mt-6 flex gap-3 justify-center">
+        <button id="quiz-retry" class="bg-white/10 hover:bg-white/20 text-white px-5 py-2 rounded-xl transition text-sm">${tryAgainText}</button>
+        <a href="${basePath}${character.id}" class="bg-primary hover:bg-primary/80 text-white px-5 py-2 rounded-xl transition text-sm">${viewProfileText}</a>
+      </div>
+    `;
+    document.getElementById("quiz-retry")?.addEventListener("click", resetQuiz);
+  }
+
+  function resetQuiz() {
+    step = 0;
+    scores = {};
+    questionContainer.classList.remove("hidden");
+    resultContainer.classList.add("hidden");
+    renderQuestion();
+  }
+
+  document.getElementById("quiz-start-btn")?.addEventListener("click", () => {
+    resetQuiz();
+    modal?.classList.remove("hidden");
+  });
+  document.getElementById("quiz-close-btn")?.addEventListener("click", () => {
+    modal?.classList.add("hidden");
+  });
+</script>

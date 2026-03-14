@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { useTranslations } from "../../../i18n/utils";
+import CrewPageContent from "../../../components/CrewPageContent.astro";
+
+const lang = "en" as const;
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={t.meta.crewTitle} description={t.meta.crewDescription} lang={lang}>
+  <CrewPageContent lang={lang} />
+</BaseLayout>

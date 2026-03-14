@@ -1,0 +1,80 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations, getLocalizedPath } from "../i18n/utils";
+import { SHOW_SOCIALS } from "../data/social";
+import type { YouTubeChannelInfo } from "../services/youtube";
+
+interface Props {
+  lang: Locale;
+  channelInfo?: YouTubeChannelInfo | null;
+}
+
+const { lang, channelInfo } = Astro.props;
+const t = useTranslations(lang);
+const videoCount = channelInfo?.videoCount ? parseInt(channelInfo.videoCount, 10) : 0;
+const episodeBadge = videoCount > 0
+  ? `+${videoCount} VIDEOS`
+  : t.hero.episodesCount;
+---
+
+<section class="hero-bg min-h-screen flex items-center relative overflow-hidden">
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-float" style="animation-delay: 1s;"></div>
+    <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-neon-purple/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="inline-block px-4 py-1 bg-primary/20 border border-primary/30 rounded-full text-primary text-sm font-medium mb-6">
+          {t.hero.badge}
+        </div>
+        <h1 class="hero-title text-white mb-2">{t.hero.line1}</h1>
+        <h1 class="hero-title text-primary mb-6">{t.hero.line2}</h1>
+        <p class="text-white/60 text-lg md:text-xl mb-8 max-w-lg">{t.hero.subtitle}</p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#ultimo-episodio" class="bg-primary hover:bg-primary/80 text-white font-semibold px-8 py-4 rounded-xl transition neon-glow text-lg">
+            {t.hero.watchLatest}
+          </a>
+          <button disabled class="border border-white/10 text-white/30 font-medium px-6 py-4 rounded-xl cursor-not-allowed">
+            {t.hero.subscribe}
+          </button>
+        </div>
+        <div class="flex gap-3 mt-8">
+          <a href={SHOW_SOCIALS.youtube} target="_blank" rel="noopener noreferrer" class="bg-white/5 hover:bg-red-600 border border-white/10 hover:border-red-600 rounded-lg px-4 py-2 text-sm font-medium transition flex items-center gap-2">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            YouTube
+          </a>
+          <a href={SHOW_SOCIALS.instagram} target="_blank" rel="noopener noreferrer" class="bg-white/5 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 border border-white/10 hover:border-transparent rounded-lg px-4 py-2 text-sm font-medium transition flex items-center gap-2">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            Instagram
+          </a>
+          <a href={SHOW_SOCIALS.facebook} target="_blank" rel="noopener noreferrer" class="bg-white/5 hover:bg-blue-600 border border-white/10 hover:border-blue-600 rounded-lg px-4 py-2 text-sm font-medium transition flex items-center gap-2">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+      <div class="hidden lg:block relative">
+        <!-- Glowing ring behind logo -->
+        <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/30 via-neon-purple/20 to-accent/30 blur-2xl animate-float"></div>
+        <div class="relative w-full aspect-square rounded-3xl overflow-hidden border-2 border-white/10 shadow-[0_0_60px_rgba(255,0,85,0.3)]">
+          <img src="/logo.jpg" alt="Las Locuras de Miguelín" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent"></div>
+        </div>
+        {videoCount > 0 && (
+          <div class="absolute -top-4 -right-4 bg-primary text-white font-display text-lg px-4 py-2 rounded-xl shadow-lg shadow-primary/40 animate-float">
+            {episodeBadge}
+          </div>
+        )}
+        <div class="absolute -bottom-4 -left-4 bg-accent text-dark font-display text-lg px-4 py-2 rounded-xl shadow-lg shadow-accent/40 animate-float" style="animation-delay: 1.5s;">
+          MIAMI
+        </div>
+        <div class="absolute top-1/2 -right-6 bg-neon-purple text-white font-display text-sm px-3 py-1.5 rounded-lg shadow-lg shadow-neon-purple/40 animate-float" style="animation-delay: 0.8s;">
+          EN VIVO
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

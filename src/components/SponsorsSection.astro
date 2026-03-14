@@ -1,0 +1,86 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
+import { getSiteData } from "../data/site";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const data = getSiteData(lang);
+
+const marqueeText = `⚠️ ${t.scamWarning.message} — ${t.scamWarning.tip} ⚠️`;
+---
+
+<section id="partners" class="py-20 bg-secondary/50">
+  <!-- Scam Warning Marquee -->
+  <div class="mb-16 bg-red-950/60 border-y-2 border-red-500/40 py-3 overflow-hidden">
+    <div class="scam-marquee whitespace-nowrap">
+      <span class="inline-block font-display text-lg md:text-xl text-red-400 px-8">{marqueeText}</span>
+      <span class="inline-block font-display text-lg md:text-xl text-red-400 px-8">{marqueeText}</span>
+      <span class="inline-block font-display text-lg md:text-xl text-red-400 px-8">{marqueeText}</span>
+      <span class="inline-block font-display text-lg md:text-xl text-red-400 px-8">{marqueeText}</span>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Sponsors -->
+    <div class="text-center mb-12">
+      <span class="text-neon-purple font-medium text-sm tracking-widest uppercase">{t.sections.sponsorsLabel}</span>
+      <h2 class="section-title text-white mt-2">{t.sections.sponsors}</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+      {data.sponsors.map((sponsor) => (
+        <a href={sponsor.link} target="_blank" rel="noopener noreferrer" class="bg-secondary rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(255,214,0,0.2)] group block">
+          <div class="aspect-[3/2] overflow-hidden">
+            <img src={sponsor.img} alt={sponsor.name} class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+          </div>
+          <div class="p-5">
+            <h3 class="text-white font-semibold">{sponsor.name}</h3>
+            <p class="text-white/40 text-sm mt-1">{sponsor.description}</p>
+            <div class="mt-3 flex items-center justify-between">
+              <span class="bg-neon-yellow/20 text-neon-yellow font-bold text-sm px-3 py-1 rounded-lg">{sponsor.discount}</span>
+              <span class="text-white/50 text-xs">{t.actions.useCode}: <code class="text-accent font-mono font-bold">{sponsor.code}</code></span>
+            </div>
+            <div class="mt-3 text-center">
+              <span class="text-accent text-sm font-medium opacity-0 group-hover:opacity-100 transition">{t.actions.getDiscount} →</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- Sponsor Contact Form -->
+    <div class="mt-16 max-w-2xl mx-auto text-center">
+      <h3 class="font-display text-2xl text-white mb-2">
+        {lang === "es" ? "¿Quieres ser patrocinador?" : "Want to be a sponsor?"}
+      </h3>
+      <p class="text-white/40 text-sm mb-6">
+        {lang === "es" ? "Contacta con nosotros para promocionar tu marca en el podcast" : "Contact us to promote your brand on the podcast"}
+      </p>
+      <div class="bg-secondary rounded-2xl border border-white/10 p-8 opacity-60">
+        <div class="space-y-4">
+          <input type="text" disabled placeholder={lang === "es" ? "Nombre de tu empresa" : "Company name"} class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white/30 placeholder:text-white/20 cursor-not-allowed" />
+          <input type="email" disabled placeholder={lang === "es" ? "Email de contacto" : "Contact email"} class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white/30 placeholder:text-white/20 cursor-not-allowed" />
+          <textarea disabled rows="3" placeholder={lang === "es" ? "Cuéntanos sobre tu marca..." : "Tell us about your brand..."} class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white/30 placeholder:text-white/20 cursor-not-allowed resize-none"></textarea>
+        </div>
+        <button disabled class="mt-6 inline-block bg-white/10 text-white/30 font-semibold px-8 py-4 rounded-xl cursor-not-allowed text-lg border border-white/10">
+          {lang === "es" ? "Próximamente" : "Coming Soon"}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .scam-marquee {
+    display: inline-flex;
+    animation: scam-scroll 25s linear infinite;
+  }
+  @keyframes scam-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+</style>

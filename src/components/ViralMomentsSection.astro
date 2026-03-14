@@ -1,0 +1,62 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const facebookReelsUrl = "https://www.facebook.com/locurasdemiguelin/reels/";
+const facebookPageUrl = "https://www.facebook.com/locurasdemiguelin";
+const pagePluginSrc = `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(facebookPageUrl)}&tabs=timeline&width=500&height=700&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false`;
+---
+
+<section id="momentos" class="py-20 bg-secondary/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="text-neon-yellow font-medium text-sm tracking-widest uppercase">{t.sections.viralMomentsLabel}</span>
+      <h2 class="section-title text-white mt-2">{t.sections.viralMoments}</h2>
+    </div>
+
+    <div class="max-w-4xl mx-auto">
+      <!-- Facebook Page Plugin Embed -->
+      <div class="flex justify-center mb-10">
+        <div class="rounded-2xl overflow-hidden border border-white/10 bg-white">
+          <iframe
+            src={pagePluginSrc}
+            width="500"
+            height="700"
+            style="border:none;overflow:hidden"
+            scrolling="no"
+            frameborder="0"
+            allowfullscreen={true}
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+
+      <!-- CTA to Facebook Reels -->
+      <div class="text-center">
+        <p class="text-white/60 mb-6 text-lg">
+          {lang === "es"
+            ? "Mira todos los momentos virales de Las Locuras de Miguelín"
+            : "Watch all the viral moments from Las Locuras de Miguelín"}
+        </p>
+        <a
+          href={facebookReelsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl transition text-lg neon-glow"
+        >
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          {lang === "es" ? "Ver Reels en Facebook" : "Watch Reels on Facebook"}
+          <span class="text-xl">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

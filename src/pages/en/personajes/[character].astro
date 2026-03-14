@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { useTranslations } from "../../../i18n/utils";
+import CharacterPageContent from "../../../components/CharacterPageContent.astro";
+import { getCharacterById, getAllCharacterIds } from "../../../data/site";
+import { fetchAllProfilePics, getInstagramPosts, fetchAllInstagramData } from "../../../services/instagram";
+import { INSTAGRAM_HANDLES } from "../../../data/social";
+
+export function getStaticPaths() {
+  return getAllCharacterIds().map((id) => ({ params: { character: id } }));
+}
+
+const lang = "en" as const;
+const t = useTranslations(lang);
+const { character: characterId } = Astro.params;
+const character = getCharacterById(characterId!)!;
+const pageTitle = `${character.name} | Las Locuras de Miguelín`;
+
+const handle = INSTAGRAM_HANDLES[character.id] || "";
+await fetchAllInstagramData([{ id: character.id, instagramHandle: handle }]);
+const profilePics = await fetchAllProfilePics([{ id: character.id, instagramHandle: handle }]);
+const profilePicUrl = profilePics[character.id] || undefined;
+const instagramPosts = getInstagramPosts(character.id);
+---
+
+<BaseLayout title={pageTitle} description={character.bio} lang={lang}>
+  <CharacterPageContent lang={lang} character={character} profilePicUrl={profilePicUrl} instagramPosts={instagramPosts} />
+</BaseLayout>

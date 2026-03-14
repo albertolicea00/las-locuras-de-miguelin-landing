@@ -1,0 +1,32 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
+import { getSiteData } from "../data/site";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const data = getSiteData(lang);
+---
+
+<section class="py-20 bg-secondary/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="text-accent font-medium text-sm tracking-widest uppercase">{t.sections.guestsLabel}</span>
+      <h2 class="section-title text-white mt-2">{t.sections.guests}</h2>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+      {data.guests.map((guest) => (
+        <div class="text-center cursor-pointer group">
+          <div class="w-32 h-32 mx-auto rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition group-hover:scale-110 group-hover:rotate-2 duration-300">
+            <img src={guest.photo} alt={guest.name} class="w-full h-full object-cover" />
+          </div>
+          <p class="text-white font-medium mt-3">{guest.name}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

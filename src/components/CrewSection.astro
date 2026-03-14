@@ -1,0 +1,55 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations, getLocalizedPath } from "../i18n/utils";
+import { getSiteData } from "../data/site";
+
+interface Props {
+  lang: Locale;
+  profilePics?: Record<string, string>;
+}
+
+const { lang, profilePics = {} } = Astro.props;
+const t = useTranslations(lang);
+const data = getSiteData(lang);
+---
+
+<section id="crew" class="py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="text-neon-purple font-medium text-sm tracking-widest uppercase">{t.sections.crewLabel}</span>
+      <h2 class="section-title text-white mt-2">{t.sections.crew}</h2>
+      <p class="text-white/50 mt-3 max-w-xl mx-auto">{t.sections.crewSubtitle}</p>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-6">
+      {data.characters.map((character) => {
+        const pic = profilePics[character.id] || character.photo;
+        return (
+          <a href={getLocalizedPath(`/personajes/${character.id}`, lang)} class="card-crew group block">
+            <div class="aspect-square bg-gradient-to-br from-white/5 to-white/0 relative overflow-hidden">
+              <img src={pic} alt={character.name} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-secondary via-transparent to-transparent"></div>
+              <div class="absolute top-3 right-3 bg-black/60 text-white/80 text-xs px-2 py-1 rounded-lg backdrop-blur-sm">
+                {character.role}
+              </div>
+            </div>
+            <div class="p-5">
+              <h3 class="font-display text-xl text-white group-hover:text-primary transition">{character.name}</h3>
+              <p class="text-primary text-sm font-medium mt-1">{character.role}</p>
+              <p class="text-white/40 text-sm mt-2 italic">{character.quote}</p>
+              <div class="mt-4 flex items-center gap-2 text-sm text-accent opacity-0 group-hover:opacity-100 transition">
+                <span>{t.actions.viewProfile}</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+    <div class="text-center mt-10">
+      <a href={getLocalizedPath("/personajes", lang)} class="inline-flex items-center gap-2 border border-white/20 hover:border-primary text-white hover:text-primary px-6 py-3 rounded-xl font-medium transition">
+        {t.sections.viewAllCrew}
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
