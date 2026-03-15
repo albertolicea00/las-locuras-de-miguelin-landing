@@ -1,43 +1,66 @@
-# Astro Starter Kit: Minimal
+# Las Locuras de Miguelín - Landing Page 🎙️
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Welcome to the official repository for the **Las Locuras de Miguelín** landing page! This project is a modern, dynamic website designed to showcase the best of the podcast, its viral episodes, and its crew.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🚀 Description
 
-## 🚀 Project Structure
+This landing page is built to provide a stunning and fluid visual experience, integrating real-time data from YouTube and Instagram to keep fans updated with the latest content.
 
-Inside of your Astro project, you'll see the following folders and files:
+## 🛠️ Technology Stack
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+- **[Astro](https://astro.build/)** - The web framework for ultimate speed.
+- **[Tailwind CSS](https://tailwindcss.com/)** - For modern, highly customizable styling.
+- **TypeScript** - For robust and typed development.
+- **YouTube API** - Integration to display the latest episodes and viral videos.
+- **Instagram Integration** - To showcase profile pictures and updated data from the crew.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## ✨ Features
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- **Hero Section:** Dynamic presentation with YouTube integration.
+- **Recent Episodes:** Automatically displays the latest podcast or live stream.
+- **Viral Videos:** A curated selection of the most popular moments from the channel.
+- **Crew / Team:** Meet the members with their updated social media profiles.
+- **Events & Sponsors:** Dedicated space for upcoming dates and partner brands.
+- **Responsive Design:** Optimized for mobile, tablet, and desktop.
+- **Multilingual Support:** Built with i18n support (Spanish and English).
 
-Any static assets, like images, can be placed in the `public/` directory.
+## 📦 Installation & Setup
 
-## 🧞 Commands
+1. **Clone the repository:**
 
-All commands are run from the root of the project, from a terminal:
+   ```bash
+   git clone https://github.com/your-username/miguelin-podcast.git
+   cd miguelin-podcast
+   ```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+2. **Install dependencies:**
 
-## 👀 Want to learn more?
+   ```bash
+   npm install
+   ```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+3. **Environment Variables:**
+   Create a `.env` file based on `.env.example` and add your API keys (YouTube, etc.).
+
+4. **Start the development server:**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please check the [CONTRIBUTING.md](CONTRIBUTING.md) file for more details on how to get started.
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+
+---
+
+Built with ❤️ for the **Las Locuras de Miguelín** community.
