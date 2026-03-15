@@ -16,6 +16,8 @@ export interface YouTubeVideo {
   likeCount: string;
   commentCount: string;
   embedUrl: string;
+  status?: "upcoming" | "members-only" | "live" | "published";
+  statusLabel?: string;
 }
 
 export interface YouTubeChannelInfo {
@@ -204,19 +206,36 @@ export async function getLatestVideos(channelId: string, maxResults = 12): Promi
     const xml = await response.text();
     const { videos } = parseRSSFeed(xml);
 
-    return videos.slice(0, maxResults).map((v) => ({
-      id: v.id,
-      title: v.title,
-      description: v.description,
-      thumbnail: v.thumbnail,
-      thumbnailHigh: `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`,
-      publishedAt: v.publishedAt,
-      duration: "",
-      viewCount: formatViewCount(v.viewCount),
-      likeCount: "0",
-      commentCount: "0",
-      embedUrl: `https://www.youtube.com/embed/${v.id}`,
-    }));
+    return videos.slice(0, maxResults).map((v) => {
+      let status: YouTubeVideo["status"] = "published";
+      let statusLabel = "";
+
+      const lowerTitle = v.title.toLowerCase();
+      const isUpcoming = v.viewCount === "0" || lowerTitle.includes("estreno") || lowerTitle.includes("premiere") || lowerTitle.includes("upcoming");
+      const isMembersOnly = lowerTitle.includes("miembros") || lowerTitle.includes("members only") || lowerTitle.includes("exclusivo");
+
+      if (isUpcoming) {
+        status = "upcoming";
+      } else if (isMembersOnly) {
+        status = "members-only";
+      }
+
+      return {
+        id: v.id,
+        title: v.title,
+        description: v.description,
+        thumbnail: v.thumbnail,
+        thumbnailHigh: `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`,
+        publishedAt: v.publishedAt,
+        duration: "",
+        viewCount: formatViewCount(v.viewCount),
+        likeCount: "0",
+        commentCount: "0",
+        embedUrl: `https://www.youtube.com/embed/${v.id}`,
+        status,
+        statusLabel,
+      };
+    });
   } catch (error) {
     console.error("[YouTube] RSS error:", error);
     return [];

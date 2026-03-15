@@ -1,7 +1,7 @@
 export const en = {
   // -- Meta --
   meta: {
-    title: "Las Locuras de Miguelín | The Podcast Where Anything Goes",
+    title: "Las Locuras de Miguelín | El podcast de la vida",
     description:
       "Las Locuras de Miguelín - Miami's craziest podcast. Cuban humor, gossip, famous guests and much more.",
     crewTitle: "The Crew | Las Locuras de Miguelín",
@@ -26,7 +26,7 @@ export const en = {
     line1: "LAS LOCURAS",
     line2: "DE MIGUELÍN",
     subtitle:
-      "The podcast where anything goes. Cuban humor, drama, gossip and the craziness that only Miami can deliver.",
+      "El podcast de la vida. Cuban humor, drama, gossip and the craziness that only Miami can deliver.",
     watchLatest: "▶ Watch latest episode",
     subscribe: "Subscribe",
     podcastSet: "PODCAST SET",
@@ -98,6 +98,10 @@ export const en = {
     episode: "Episode",
     eps: "eps",
     views: "views",
+    upcoming: "UPCOMING PREMIERE",
+    live: "LIVE",
+    membersOnly: "MEMBERS ONLY",
+    scheduled: "Scheduled",
   },
 
   // -- Social --
@@ -117,7 +121,7 @@ export const en = {
 
   // -- Footer --
   footer: {
-    tagline: "The podcast where anything goes",
+    tagline: "El podcast de la vida",
   },
 
   // -- Quiz Questions --

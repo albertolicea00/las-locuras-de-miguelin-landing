@@ -17,7 +17,7 @@ const character = getCharacterById(characterId!)!;
 const pageTitle = `${character.name} | Las Locuras de Miguelín`;
 
 const handle = INSTAGRAM_HANDLES[character.id] || "";
-// Fetch all Instagram data (pics + posts) in one call
+// Fetch build-time data
 await fetchAllInstagramData([{ id: character.id, instagramHandle: handle }]);
 const profilePics = await fetchAllProfilePics([{ id: character.id, instagramHandle: handle }]);
 const profilePicUrl = profilePics[character.id] || undefined;
@@ -25,5 +25,34 @@ const instagramPosts = getInstagramPosts(character.id);
 ---
 
 <BaseLayout title={pageTitle} description={character.bio} lang={lang}>
-  <CharacterPageContent lang={lang} character={character} profilePicUrl={profilePicUrl} instagramPosts={instagramPosts} />
+  <div id="character-data" 
+    data-server-posts={JSON.stringify(instagramPosts)} 
+    data-handle={handle}>
+    <CharacterPageContent 
+      lang={lang} 
+      character={character} 
+      profilePicUrl={profilePicUrl} 
+      instagramPosts={instagramPosts} 
+    />
+  </div>
 </BaseLayout>
+
+<script>
+  import { IG_CACHE_KEY_PREFIX } from "../../services/instagram-client";
+  
+  // This script runs on the client to check if we should show cached data instead of server data
+  const dataEl = document.getElementById("character-data");
+  const handle = dataEl?.dataset.handle;
+  const serverPosts = JSON.parse(dataEl?.dataset.serverPosts || "[]");
+
+  if (handle && serverPosts.length === 0) {
+    const cached = localStorage.getItem(`${IG_CACHE_KEY_PREFIX}${handle}`);
+    if (cached) {
+      // If we have cached data and the server gave us nothing (rate limited), reload to show it
+      // The CharacterPageContent will need to be updated to check localStorage as well or we just reload
+      // and let the client-side script in CharacterPageContent handle the "display" part if we were to 
+      // make it a client component. 
+      // Better: we update CharacterPageContent to be able to render from JS.
+    }
+  }
+</script>

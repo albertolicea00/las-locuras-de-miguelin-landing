@@ -27,8 +27,20 @@ const hasLive = liveVideos.length > 0;
           <a href={`https://www.youtube.com/watch?v=${video.id}`} target="_blank" rel="noopener noreferrer" class="card-episode cursor-pointer group block">
             <div class="relative overflow-hidden">
               <img src={video.thumbnail} alt={video.title} class="w-full aspect-video object-cover group-hover:scale-110 transition duration-500" loading="lazy" />
-              <div class="absolute top-3 left-3 bg-primary text-white text-xs font-bold px-2 py-1 rounded-lg">
-                {video.viewCount} {t.characterPage.views}
+              <div class="absolute top-3 left-3 flex flex-col gap-1 items-start">
+                <div class="bg-primary text-white text-xs font-bold px-2 py-1 rounded-lg">
+                  {video.viewCount} {t.characterPage.views}
+                </div>
+                {video.status === "upcoming" && (
+                  <div class="bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-lg uppercase animate-pulse">
+                    {t.characterPage.upcoming}
+                  </div>
+                )}
+                {video.status === "members-only" && (
+                  <div class="bg-amber-500 text-black text-[10px] font-bold px-2 py-1 rounded-lg uppercase">
+                    {t.characterPage.membersOnly}
+                  </div>
+                )}
               </div>
               <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm">
                 {video.duration}

@@ -1,7 +1,7 @@
 export const es = {
   // -- Meta --
   meta: {
-    title: "Las Locuras de Miguelín | El Podcast Donde Pasa de Todo",
+    title: "Las Locuras de Miguelín | De La Vida",
     description:
       "Las Locuras de Miguelín - El podcast más loco de Miami. Humor cubano, chismes, invitados famosos y mucho más.",
     crewTitle: "El Crew | Las Locuras de Miguelín",
@@ -26,7 +26,7 @@ export const es = {
     line1: "LAS LOCURAS",
     line2: "DE MIGUELÍN",
     subtitle:
-      "El podcast donde pasa de todo. Humor cubano, drama, chismes y las locuras que solo Miami puede dar.",
+      "El podcast de la vida. Humor cubano, drama, chismes y las locuras que solo Miami puede dar.",
     watchLatest: "▶ Ver último episodio",
     subscribe: "Suscribirse",
     podcastSet: "SET DEL PODCAST",
@@ -83,6 +83,8 @@ export const es = {
     quizResultIntro: "Tu resultado es...",
     quizResultPrefix: "¡ERES",
     quizResultSuffix: "!",
+    quizResultIntro_en: "Your result is...",
+    quizResultPrefix_en: "YOU ARE",
   },
 
   // -- Character Page --
@@ -98,6 +100,10 @@ export const es = {
     episode: "Episodio",
     eps: "eps",
     views: "views",
+    upcoming: "PRÓXIMO ESTRENO",
+    live: "EN VIVO",
+    membersOnly: "SÓLO MIEMBROS",
+    scheduled: "Programado",
   },
 
   // -- Social --
@@ -110,14 +116,16 @@ export const es = {
   // -- Scam Warning --
   scamWarning: {
     title: "⚠️ AVISO IMPORTANTE",
-    message: "Las Locuras de Miguelín NO vende productos ni mercancía. Si ves cuentas vendiendo productos en nuestro nombre, son PERFILES FALSOS. No te dejes estafar.",
+    message:
+      "Las Locuras de Miguelín NO vende productos ni mercancía. Si ves cuentas vendiendo productos en nuestro nombre, son PERFILES FALSOS. No te dejes estafar.",
     tip: "Solo confía en nuestras redes oficiales verificadas.",
-    report: "Si encuentras una cuenta falsa, repórtala en la plataforma correspondiente.",
+    report:
+      "Si encuentras una cuenta falsa, repórtala en la plataforma correspondiente.",
   },
 
   // -- Footer --
   footer: {
-    tagline: "El podcast donde pasa de todo",
+    tagline: "El podcast de la vida",
   },
 
   // -- Quiz Questions --

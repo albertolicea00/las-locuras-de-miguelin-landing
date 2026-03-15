@@ -56,10 +56,22 @@ const embedUrl = hasLive ? liveVideo!.embedUrl : "";
       )}
       <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h3 class="text-2xl font-bold text-white">{title}</h3>
+          <div class="flex items-center gap-2 mb-2">
+            <h3 class="text-2xl font-bold text-white">{title}</h3>
+            {hasLive && liveVideo!.status === "upcoming" && (
+              <span class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
+                {t.characterPage.upcoming}
+              </span>
+            )}
+            {hasLive && liveVideo!.status === "members-only" && (
+              <span class="bg-amber-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                {t.characterPage.membersOnly}
+              </span>
+            )}
+          </div>
           <div class="flex gap-4 mt-2 text-white/50 text-sm">
             {duration && <span>⏱ {duration}</span>}
-            {views && <span>👁 {views} {t.characterPage.views}</span>}
+            {views && !(hasLive && liveVideo!.status === "upcoming") && <span>👁 {views} {t.characterPage.views}</span>}
             {!hasLive && <span>🎤 {fallback.guest}</span>}
             {!hasLive && <span>💬 {fallback.topic}</span>}
           </div>

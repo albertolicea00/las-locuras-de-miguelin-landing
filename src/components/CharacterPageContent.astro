@@ -35,34 +35,39 @@ if (hasTiktok) socials.push({ type: "tiktok", url: p.tiktok, label: "TikTok" });
 
 <!-- Floating Social Bar -->
 {socials.length > 0 && (
-  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 bg-dark/90 backdrop-blur-xl border border-white/10 rounded-full px-4 py-2 shadow-2xl shadow-black/50" id="floating-social">
-    <img src={pic} alt={p.name} class="w-8 h-8 rounded-full object-cover border-2" style={`border-color:${p.color}`} />
-    <span class="text-white font-semibold text-sm hidden sm:inline">{p.name}</span>
-    <div class="w-px h-5 bg-white/20 mx-1"></div>
-    {socials.map((s) => (
-      <a href={s.url} target="_blank" rel="noopener noreferrer" class="social-float-btn group relative" data-type={s.type} title={s.label}>
-        {s.type === "instagram" && (
-          <div class="w-9 h-9 rounded-full bg-white/5 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 flex items-center justify-center transition">
-            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-          </div>
-        )}
-        {s.type === "youtube" && (
-          <div class="w-9 h-9 rounded-full bg-white/5 hover:bg-red-600 flex items-center justify-center transition">
-            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-          </div>
-        )}
-        {s.type === "facebook" && (
-          <div class="w-9 h-9 rounded-full bg-white/5 hover:bg-blue-600 flex items-center justify-center transition">
-            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          </div>
-        )}
-        {s.type === "tiktok" && (
-          <div class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/20 flex items-center justify-center transition">
-            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.72a8.19 8.19 0 0 0 4.76 1.52v-3.4a4.85 4.85 0 0 1-1-.15z"/></svg>
-          </div>
-        )}
-      </a>
-    ))}
+  <div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-4 bg-dark/90 backdrop-blur-2xl border border-white/20 rounded-full px-6 py-3 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-primary/20" id="floating-social">
+    <img src={pic} alt={p.name} class="w-12 h-12 rounded-full object-cover border-2 shadow-lg" style={`border-color:${p.color}`} />
+    <div class="flex flex-col hidden sm:block">
+      <span class="text-white font-bold text-lg leading-tight block">{p.name}</span>
+      <span class="text-white/40 text-[10px] uppercase tracking-widest">{p.role}</span>
+    </div>
+    <div class="w-px h-8 bg-white/10 mx-2 hidden sm:block"></div>
+    <div class="flex items-center gap-3">
+      {socials.map((s) => (
+        <a href={s.url} target="_blank" rel="noopener noreferrer" class="social-float-btn group relative" data-type={s.type} title={s.label}>
+          {s.type === "instagram" && (
+            <div class="w-11 h-11 rounded-full bg-white/5 border border-white/10 hover:border-transparent hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] flex items-center justify-center transition-all duration-300 shadow-xl">
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            </div>
+          )}
+          {s.type === "youtube" && (
+            <div class="w-11 h-11 rounded-full bg-white/5 border border-white/10 hover:border-transparent hover:bg-red-600 flex items-center justify-center transition-all duration-300 shadow-xl">
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </div>
+          )}
+          {s.type === "facebook" && (
+            <div class="w-11 h-11 rounded-full bg-white/5 border border-white/10 hover:border-transparent hover:bg-blue-600 flex items-center justify-center transition-all duration-300 shadow-xl">
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </div>
+          )}
+          {s.type === "tiktok" && (
+            <div class="w-11 h-11 rounded-full bg-white/5 border border-white/10 hover:border-transparent hover:bg-zinc-800 flex items-center justify-center transition-all duration-300 shadow-xl">
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.72a8.19 8.19 0 0 0 4.76 1.52v-3.4a4.85 4.85 0 0 1-1-.15z"/></svg>
+            </div>
+          )}
+        </a>
+      ))}
+    </div>
   </div>
 )}
 
@@ -77,8 +82,8 @@ if (hasTiktok) socials.push({ type: "tiktok", url: p.tiktok, label: "TikTok" });
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <!-- Photo -->
       <div class="order-2 lg:order-1">
-        <div class="aspect-[3/4] max-w-md mx-auto rounded-3xl overflow-hidden relative" style={`background: linear-gradient(135deg, ${p.color}20, transparent); border: 2px solid ${p.color}40`}>
-          <img src={pic} alt={p.name} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+        <div class="aspect-[3/4] max-w-md mx-auto rounded-3xl overflow-hidden relative group" style={`background: linear-gradient(135deg, ${p.color}20, transparent); border: 2px solid ${p.color}40`}>
+          <img src={pic} alt={p.name} class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700" loading="lazy" />
           <div class="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-transparent"></div>
         </div>
       </div>
@@ -88,9 +93,29 @@ if (hasTiktok) socials.push({ type: "tiktok", url: p.tiktok, label: "TikTok" });
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
           {t.actions.backToCrew}
         </a>
-        <div class="inline-block px-3 py-1 rounded-full text-xs font-bold text-white mb-4" style={`background:${p.color}`}>{p.role}</div>
-        <h1 class="font-display text-6xl md:text-7xl lg:text-8xl text-white leading-none">{p.name.toUpperCase()}</h1>
-        <p class="text-white/50 text-lg mt-4 italic">{p.quote}</p>
+        <div class="inline-block px-3 py-1 rounded-full text-xs font-bold text-white mb-4 shadow-lg" style={`background:${p.color}`}>{p.role}</div>
+        <h1 class="font-display text-6xl md:text-7xl lg:text-8xl text-white leading-[0.9]">{p.name.toUpperCase()}</h1>
+        <p class="text-white/60 text-xl mt-6 italic font-light tracking-wide max-w-xl border-l-4 border-primary/40 pl-6 py-2">{p.quote}</p>
+        
+        <!-- Social Links in Hero Instance -->
+        <div class="flex flex-wrap items-center gap-4 mt-10">
+          {socials.map((s) => (
+            <a 
+              href={s.url} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 px-5 py-3 rounded-2xl transition-all hover:-translate-y-1"
+            >
+              {s.type === "instagram" && <svg class="w-5 h-5 text-pink-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>}
+              {s.type === "youtube" && <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>}
+              {s.type === "facebook" && <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>}
+              {s.type === "tiktok" && <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.72a8.19 8.19 0 0 0 4.76 1.52v-3.4a4.85 4.85 0 0 1-1-.15z"/></svg>}
+              <span class="text-white font-medium text-sm">
+                {s.type === 'instagram' ? s.label : s.type.charAt(0).toUpperCase() + s.type.slice(1)}
+              </span>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   </div>
@@ -105,13 +130,94 @@ if (hasTiktok) socials.push({ type: "tiktok", url: p.tiktok, label: "TikTok" });
 </section>
 
 <!-- Instagram Posts -->
-<InstagramPostsGrid
-  lang={lang}
-  posts={instagramPosts}
-  instagramUrl={p.instagram}
-  characterName={p.name}
-  characterColor={p.color}
-/>
+<div id="ig-grid-container" data-handle={instagramHandle} data-lang={lang} data-server-posts={JSON.stringify(instagramPosts)}>
+  <InstagramPostsGrid
+    lang={lang}
+    posts={instagramPosts}
+    instagramUrl={p.instagram}
+    characterName={p.name}
+    characterColor={p.color}
+  />
+</div>
+
+<script>
+  import { fetchInstagramDataClient, IG_CACHE_KEY_PREFIX } from "../services/instagram-client";
+
+  const container = document.getElementById("ig-grid-container");
+  const handle = container?.dataset.handle;
+  const serverPostsRaw = container?.dataset.serverPosts || "[]";
+  const serverPosts = JSON.parse(serverPostsRaw);
+  const grid = container?.querySelector("#instagram-posts-grid");
+
+  async function initInstagram() {
+    if (!handle || !container) return;
+
+    // 1. If we have server posts, we are good (server-side worked)
+    if (serverPosts.length > 0) {
+      console.log("[IG] Server-side data present.");
+      return;
+    }
+
+    // 2. If no server posts, check localStorage first (fast)
+    const cachedDataRaw = localStorage.getItem(`${IG_CACHE_KEY_PREFIX}${handle}`);
+    if (cachedDataRaw) {
+      const cachedData = JSON.parse(cachedDataRaw);
+      // If we have cached posts, we can refresh the page to let it render 
+      // OR we just proceed to fetch updated ones. 
+      // For simplicity in Astro, a reload will cause the server to still fail (if it's rate-limited),
+      // so we need a way to inject them.
+      // But actually, the script here can just RENDER them if we want to be fancy.
+      // However, the easiest path is to let the user know we are fetching.
+    }
+
+    // 3. Fetch from Client IP (User's browser)
+    const data = await fetchInstagramDataClient(handle);
+    if (data && data.posts.length > 0) {
+      // Once we have data in localStorage, we could potentially reload
+      // but if the server is STILL rate limited, it won't help unless we modify 
+      // the server-side to check something... which it can't (it's server-side).
+      
+      // So let's do a client-side render of the grid items
+      if (grid) {
+        renderPosts(data.posts, container.dataset.lang || 'es');
+        const placeholder = document.getElementById("ig-loading-placeholder");
+        if (placeholder) placeholder.style.display = 'none';
+      }
+    } else {
+      // If both fail, hide section
+      const section = document.getElementById("instagram-section");
+      if (section) section.style.display = 'none';
+    }
+  }
+
+  function renderPosts(posts: any[], lang: string) {
+    if (!grid) return;
+    grid.innerHTML = posts.slice(0, 9).map(post => `
+      <a href="${post.url}" target="_blank" rel="noopener noreferrer" class="group relative aspect-square rounded-xl overflow-hidden bg-secondary border border-white/5 hover:border-white/20 transition-all duration-300">
+        <img src="${post.thumbnail}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+        ${post.isVideo ? `
+          <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm rounded-full p-1.5">
+            <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        ` : ''}
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+          <div class="flex items-center gap-3 text-white text-xs">
+            <span class="flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              ${post.likes}
+            </span>
+            <span class="flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              ${post.comments}
+            </span>
+          </div>
+        </div>
+      </a>
+    `).join('');
+  }
+
+  initInstagram();
+</script>
 
 <!-- Other Crew -->
 <section class="py-16 pb-32">
