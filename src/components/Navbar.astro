@@ -17,12 +17,14 @@ const currentPath = Astro.url.pathname;
 const pathWithoutLang = currentPath.replace(/^\/(en|es)/, "") || "/";
 const altPath = getLocalizedPath(pathWithoutLang, altLang);
 const homePath = getLocalizedPath("/", lang);
+const normalizePath = (path: string) => path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path;
+const isHomePage = normalizePath(currentPath) === normalizePath(homePath);
 ---
 
 <nav class="nav-glass fixed top-0 left-0 right-0 z-50 border-b border-white/5">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
-      <!-- Logo + Sponsor CTA -->
+      <!-- Logo -->
       <div class="flex items-center gap-4">
         <a href={homePath} class="flex items-center gap-2">
           <span class="font-display text-2xl text-primary">LAS LOCURAS</span>
@@ -35,7 +37,9 @@ const homePath = getLocalizedPath("/", lang);
         <a href={`${homePath}#episodios`} class="text-white/70 hover:text-primary transition">{t.nav.episodes}</a>
         <a href={getLocalizedPath("/personajes", lang)} class:list={["transition", activeSection === "crew" ? "text-primary" : "text-white/70 hover:text-primary"]}>{t.nav.crew}</a>
         <a href={`${homePath}#eventos`} class="text-white/70 hover:text-primary transition">{t.nav.events}</a>
-        <a href={getLocalizedPath("/patrocinar", lang)} class="text-white/70 hover:text-primary transition">{t.nav.merch}</a>
+        {!isHomePage && (
+          <a href={getLocalizedPath("/patrocinar", lang)} class="text-white/70 hover:text-primary transition">{t.nav.merch}</a>
+        )}
       </div>
 
       <!-- Right side: Lang switch + Social -->
@@ -76,7 +80,9 @@ const homePath = getLocalizedPath("/", lang);
         <a href={`${homePath}#episodios`} class="text-white/70 hover:text-primary">{t.nav.episodes}</a>
         <a href={getLocalizedPath("/personajes", lang)} class="text-white/70 hover:text-primary">{t.nav.crew}</a>
         <a href={`${homePath}#eventos`} class="text-white/70 hover:text-primary">{t.nav.events}</a>
-        <a href={getLocalizedPath("/patrocinar", lang)} class="text-white/70 hover:text-primary">{t.nav.merch}</a>
+        {!isHomePage && (
+          <a href={getLocalizedPath("/patrocinar", lang)} class="text-white/70 hover:text-primary">{t.nav.merch}</a>
+        )}
       </div>
     </div>
   </div>

@@ -96,9 +96,6 @@ const t = useTranslations(lang);
             <li class="flex items-start gap-3"><span class="text-primary mt-0.5">✓</span> Logo in video description</li>
             <li class="flex items-start gap-3"><span class="text-primary mt-0.5">✓</span> Social media tag</li>
           </ul>
-          <a href="#sponsor-form" class="mt-8 block text-center bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold px-6 py-4 rounded-xl transition">
-            More info →
-          </a>
         </div>
         <!-- Plan 2: Viral -->
         <div class="bg-gradient-to-b from-primary/10 to-secondary rounded-3xl p-8 border-2 border-primary/40 hover:border-primary transition-all duration-300 hover:-translate-y-3 flex flex-col relative">
@@ -115,9 +112,6 @@ const t = useTranslations(lang);
             <li class="flex items-start gap-3"><span class="text-primary mt-0.5">✓</span> Instagram Post + Story</li>
             <li class="flex items-start gap-3"><span class="text-primary mt-0.5">✓</span> Viral TikTok/Reels clip</li>
           </ul>
-          <a href="#sponsor-form" class="mt-8 block text-center bg-primary hover:bg-primary/80 text-white font-bold px-6 py-4 rounded-xl transition neon-glow">
-            More info →
-          </a>
         </div>
         <!-- Plan 3: Elite -->
         <div class="bg-secondary rounded-3xl p-8 border border-accent/20 hover:border-accent/50 transition-all duration-300 hover:-translate-y-2 flex flex-col">
@@ -132,39 +126,8 @@ const t = useTranslations(lang);
             <li class="flex items-start gap-3"><span class="text-accent mt-0.5">✓</span> Presence at live events</li>
             <li class="flex items-start gap-3"><span class="text-accent mt-0.5">✓</span> Direct crew collaboration access</li>
           </ul>
-          <a href="#sponsor-form" class="mt-8 block text-center bg-accent/10 hover:bg-accent/20 border border-accent/30 text-accent font-semibold px-6 py-4 rounded-xl transition">
-            More info →
-          </a>
         </div>
       </div>
     </div>
   </section>
-
-  <!-- Contact Form -->
-  <section id="sponsor-form" class="py-20">
-    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="font-display text-4xl md:text-5xl text-white">{t.sponsorPage.formTitle}</h2>
-        <p class="text-white/40 text-lg mt-4">{t.sponsorPage.formSubtitle}</p>
-      </div>
-      <form class="bg-secondary rounded-3xl border border-white/10 p-8 md:p-10 space-y-6">
-        <div>
-          <label class="text-white/50 text-sm font-medium mb-2 block">{t.sponsorPage.formName}</label>
-          <input type="text" placeholder="Miami Coffee Co." class="w-full bg-white/5 border border-white/10 focus:border-primary/50 rounded-xl px-5 py-4 text-white placeholder:text-white/20 outline-none transition" />
-        </div>
-        <div>
-          <label class="text-white/50 text-sm font-medium mb-2 block">{t.sponsorPage.formEmail}</label>
-          <input type="email" placeholder="marketing@yoursite.com" class="w-full bg-white/5 border border-white/10 focus:border-primary/50 rounded-xl px-5 py-4 text-white placeholder:text-white/20 outline-none transition" />
-        </div>
-        <div>
-          <label class="text-white/50 text-sm font-medium mb-2 block">{t.sponsorPage.formMessage}</label>
-          <textarea rows="4" placeholder={t.sponsorPage.formMessage} class="w-full bg-white/5 border border-white/10 focus:border-primary/50 rounded-xl px-5 py-4 text-white placeholder:text-white/20 outline-none transition resize-none"></textarea>
-        </div>
-        <button type="submit" class="w-full bg-primary hover:bg-primary/80 text-white font-bold text-lg px-8 py-5 rounded-xl transition neon-glow">
-          {t.sponsorPage.formSubmit}
-        </button>
-      </form>
-    </div>
-  </section>
-
 </BaseLayout>

@@ -41,16 +41,9 @@ const altLang = getAlternateLang(lang);
     {!Astro.url.pathname.includes('/patrocinar') && !Astro.url.pathname.includes('/sponsor') && (
       <a 
         href={getLocalizedPath("/patrocinar", lang)} 
-        class="fixed bottom-10 right-10 z-[60] group"
+        class="fixed bottom-8 right-8 z-[60] rounded-full bg-neon-purple px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_35px_rgba(224,64,251,0.35)] transition hover:scale-105 hover:bg-neon-purple/90"
       >
-        <div class="absolute inset-0 bg-accent rounded-full blur-xl group-hover:blur-2xl transition-all animate-pulse opacity-50"></div>
-        <div class="relative bg-accent text-dark font-black px-6 py-6 rounded-full flex flex-col items-center justify-center leading-none text-center shadow-[0_0_40px_rgba(255,214,0,0.4)] border-4 border-dark group-hover:scale-110 transition-transform duration-300">
-          <span class="text-xs uppercase tracking-tighter mb-1">{lang === 'es' ? 'TU MARCA' : 'YOUR BRAND'}</span>
-          <span class="text-xl">{lang === 'es' ? 'PATROCINAR' : 'SPONSOR'}</span>
-          <div class="absolute -top-2 -right-2 bg-primary text-white text-[10px] px-2 py-1 rounded-full animate-bounce">
-            HOT 🔥
-          </div>
-        </div>
+        {lang === 'es' ? 'Patrocinar' : 'Sponsor'}
       </a>
     )}
 
