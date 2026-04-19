@@ -54,7 +54,7 @@ export const en = {
     event: "NEXT EVENT 🎟",
     eventLabel: "Live",
     sponsors: "SPONSORS 🤝",
-    sponsorsLabel: "Exclusive deals",
+    sponsorsLabel: "Partner brands",
     social: "SOCIAL MEDIA 📱",
     socialLabel: "Follow us",
   },

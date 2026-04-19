@@ -1,64 +1,544 @@
 ---
 import type { Locale } from "../i18n/utils";
 import { useTranslations } from "../i18n/utils";
-import { getSiteData } from "../data/site";
+import { getLocalizedSponsorText, getSponsorCatalog, isSponsorActive, type SponsorItem } from "../data/sponsors";
 
 interface Props {
   lang: Locale;
+  showScamWarning?: boolean;
 }
 
-const { lang } = Astro.props;
+interface LocalizedSponsorItem extends SponsorItem {
+  offerText: string;
+  shortDescriptionText: string;
+  internalNoteText: string;
+}
+
+const { lang, showScamWarning = true } = Astro.props;
 const t = useTranslations(lang);
-const data = getSiteData(lang);
+const sponsorCatalog: LocalizedSponsorItem[] = getSponsorCatalog().map((sponsor) => ({
+  ...sponsor,
+  offerText: getLocalizedSponsorText(sponsor.offer, lang),
+  shortDescriptionText: getLocalizedSponsorText(sponsor.shortDescription, lang),
+  internalNoteText: getLocalizedSponsorText(sponsor.internalNote, lang),
+}));
+const initialSponsors = sponsorCatalog.filter((sponsor) => isSponsorActive(sponsor, new Date()));
 
 const marqueeText = `⚠️ ${t.scamWarning.message} — ${t.scamWarning.tip} ⚠️`;
+const labels = lang === "es"
+  ? {
+      visit: "Visitar sponsor",
+      none: "No hay patrocinadores activos ahora mismo.",
+      instagram: "Instagram",
+      carousel: "Carrusel de patrocinadores",
+    }
+  : {
+      visit: "Visit sponsor",
+      none: "There are no active sponsors right now.",
+      instagram: "Instagram",
+      carousel: "Sponsors carousel",
+    };
+
+function hexToRgba(hex: string, alpha: number): string {
+  const value = hex.replace("#", "");
+  const normalized = value.length === 3
+    ? value.split("").map((char) => `${char}${char}`).join("")
+    : value;
+
+  const red = Number.parseInt(normalized.slice(0, 2), 16);
+  const green = Number.parseInt(normalized.slice(2, 4), 16);
+  const blue = Number.parseInt(normalized.slice(4, 6), 16);
+
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+}
+
+function getSponsorStyleVars(accentColor: string, logoAsset?: string | null): string {
+  return [
+    `--sponsor-accent:${accentColor}`,
+    `--sponsor-accent-soft:${hexToRgba(accentColor, 0.16)}`,
+    `--sponsor-accent-border:${hexToRgba(accentColor, 0.35)}`,
+    `--sponsor-accent-glow:${hexToRgba(accentColor, 0.2)}`,
+    logoAsset ? `--sponsor-logo:url(${logoAsset})` : "--sponsor-logo:none",
+  ].join(";");
+}
 ---
 
-<section id="partners" class="py-20 bg-secondary/50">
-  <!-- Scam Warning Marquee -->
-  <div class="mb-16 bg-red-950/60 border-y-2 border-red-500/40 py-3 overflow-hidden">
-    <div class="scam-marquee whitespace-nowrap">
-      <span class="inline-block font-display text-lg md:text-xl text-red-400 px-8">{marqueeText}</span>
-      <span class="inline-block font-display text-lg md:text-xl text-red-400 px-8">{marqueeText}</span>
-      <span class="inline-block font-display text-lg md:text-xl text-red-400 px-8">{marqueeText}</span>
-      <span class="inline-block font-display text-lg md:text-xl text-red-400 px-8">{marqueeText}</span>
+<section id="partners" class="py-20 bg-secondary/50 overflow-hidden">
+  {showScamWarning && (
+    <div class="mb-16 bg-red-950/60 border-y-2 border-red-500/40 py-3 overflow-hidden">
+      <div class="scam-marquee whitespace-nowrap">
+        <span class="inline-block font-display text-lg md:text-xl text-red-400 px-8">{marqueeText}</span>
+        <span class="inline-block font-display text-lg md:text-xl text-red-400 px-8">{marqueeText}</span>
+        <span class="inline-block font-display text-lg md:text-xl text-red-400 px-8">{marqueeText}</span>
+        <span class="inline-block font-display text-lg md:text-xl text-red-400 px-8">{marqueeText}</span>
+      </div>
     </div>
-  </div>
+  )}
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Sponsors -->
     <div class="text-center mb-12">
       <span class="text-neon-purple font-medium text-sm tracking-widest uppercase">{t.sections.sponsorsLabel}</span>
       <h2 class="section-title text-white mt-2">{t.sections.sponsors}</h2>
     </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-      {data.sponsors.map((sponsor) => (
-        <a href={sponsor.link} target="_blank" rel="noopener noreferrer" class="bg-secondary rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(255,214,0,0.2)] group block">
-          <div class="aspect-[3/2] overflow-hidden">
-            <img src={sponsor.img} alt={sponsor.name} class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
-          </div>
-          <div class="p-5">
-            <h3 class="text-white font-semibold">{sponsor.name}</h3>
-            <p class="text-white/40 text-sm mt-1">{sponsor.description}</p>
-            <div class="mt-3 flex items-center justify-between">
-              <span class="bg-neon-yellow/20 text-neon-yellow font-bold text-sm px-3 py-1 rounded-lg">{sponsor.discount}</span>
-              <span class="text-white/50 text-xs">{t.actions.useCode}: <code class="text-accent font-mono font-bold">{sponsor.code}</code></span>
-            </div>
-            <div class="mt-3 text-center">
-              <span class="text-accent text-sm font-medium opacity-0 group-hover:opacity-100 transition">{t.actions.getDiscount} →</span>
-            </div>
-          </div>
-        </a>
-      ))}
-    </div>
+
+  </div>
+
+  <div
+    id="sponsors-carousel"
+    class="relative left-1/2 w-screen max-w-none -translate-x-1/2 px-4 sm:px-6 lg:px-10"
+    aria-label={labels.carousel}
+    data-sponsors={JSON.stringify(sponsorCatalog)}
+    style="--visible-slides: 3;"
+  >
+      <div id="sponsors-viewport" data-sponsors-viewport class="overflow-hidden select-none">
+        <div id="sponsors-track" class="flex gap-6 will-change-transform">
+          {initialSponsors.map((sponsor) => {
+            return (
+              <a
+                href={sponsor.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="sponsor-slide group shrink-0 rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 via-white/[0.07] to-transparent p-5 transition duration-300 hover:-translate-y-2 hover:border-white/20 hover:shadow-[0_18px_45px_rgba(0,0,0,0.2)]"
+                style={getSponsorStyleVars(sponsor.accentColor, sponsor.logoAsset)}
+              >
+                <div class="flex items-center gap-4">
+                  <div class="sponsor-icon-chip flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl font-display text-xl shadow-lg md:h-20 md:w-20">
+                    {!sponsor.logoAsset && sponsor.initials}
+                    <span class="sr-only">{sponsor.name}</span>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <span class="sponsor-domain-chip inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em]">
+                      {sponsor.isInstagram ? labels.instagram : sponsor.hostname}
+                    </span>
+                    <h3 class="mt-3 text-xl font-display text-white md:text-2xl">{sponsor.name}</h3>
+                    <p class="mt-2 text-sm leading-relaxed text-white/60">{sponsor.shortDescriptionText}</p>
+                    {sponsor.isInstagram && (
+                      <p class="mt-2 text-xs text-white/35">{sponsor.displayUrl}</p>
+                    )}
+                  </div>
+                </div>
+                {(sponsor.offerText || sponsor.code) && (
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    {sponsor.offerText && (
+                      <span class="text-sm font-medium text-white/80">
+                        {sponsor.offerText}
+                      </span>
+                    )}
+                    {sponsor.code && (
+                      <span class="sponsor-code-chip rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide">
+                        <code class="font-mono">{sponsor.code}</code>
+                      </span>
+                    )}
+                  </div>
+                )}
+                <div class="mt-6 flex items-center justify-end text-sm">
+                  <span class="font-medium text-accent transition group-hover:text-white">{labels.visit} →</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+
+      <p id="sponsors-empty" class:list={["mt-8 text-center text-sm text-white/45", initialSponsors.length > 0 && "hidden"]}>
+        {labels.none}
+      </p>
   </div>
 </section>
+
+<script define:vars={{ sponsorCatalog, labels }}>
+  function escapeHtml(value = "") {
+    return value
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function parseExpirationDate(expiresAt) {
+    if (!expiresAt) return null;
+
+    const normalized = /^\d{4}-\d{2}-\d{2}$/.test(expiresAt)
+      ? `${expiresAt}T23:59:59.999`
+      : expiresAt;
+    const parsed = new Date(normalized);
+
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  function isSponsorActive(sponsor) {
+    if (!sponsor.enabled) return false;
+
+    const expirationDate = parseExpirationDate(sponsor.expiresAt);
+    if (!expirationDate) return true;
+
+    return expirationDate.getTime() >= Date.now();
+  }
+
+  function shuffleSponsors(items) {
+    const shuffled = [...items];
+
+    for (let index = shuffled.length - 1; index > 0; index -= 1) {
+      const nextIndex = Math.floor(Math.random() * (index + 1));
+      [shuffled[index], shuffled[nextIndex]] = [shuffled[nextIndex], shuffled[index]];
+    }
+
+    return shuffled;
+  }
+
+  function getVisibleSlides() {
+    if (window.innerWidth >= 1024) return 3;
+    if (window.innerWidth >= 640) return 2;
+    return 1;
+  }
+
+  function hexToRgba(hex, alpha) {
+    const value = String(hex || "").replace("#", "");
+    const normalized = value.length === 3
+      ? value.split("").map((char) => `${char}${char}`).join("")
+      : value;
+
+    const red = Number.parseInt(normalized.slice(0, 2), 16);
+    const green = Number.parseInt(normalized.slice(2, 4), 16);
+    const blue = Number.parseInt(normalized.slice(4, 6), 16);
+
+    return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+  }
+
+  function getSponsorStyleVars(accentColor, logoAsset) {
+    return [
+      `--sponsor-accent:${accentColor}`,
+      `--sponsor-accent-soft:${hexToRgba(accentColor, 0.16)}`,
+      `--sponsor-accent-border:${hexToRgba(accentColor, 0.35)}`,
+      `--sponsor-accent-glow:${hexToRgba(accentColor, 0.2)}`,
+      logoAsset ? `--sponsor-logo:url(${logoAsset})` : "--sponsor-logo:none",
+    ].join(";");
+  }
+
+  function renderCard(sponsor) {
+
+    return `
+      <a
+        href="${escapeHtml(sponsor.url)}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="sponsor-slide group shrink-0 rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 via-white/[0.07] to-transparent p-5 transition duration-300 hover:-translate-y-2 hover:border-white/20 hover:shadow-[0_18px_45px_rgba(0,0,0,0.2)]"
+        style="${escapeHtml(getSponsorStyleVars(sponsor.accentColor, sponsor.logoAsset))}"
+      >
+        <div class="flex items-center gap-4">
+          <div class="sponsor-icon-chip flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl font-display text-xl shadow-lg md:h-20 md:w-20">
+            ${!sponsor.logoAsset ? escapeHtml(sponsor.initials) : ""}
+            <span class="sr-only">${escapeHtml(sponsor.name)}</span>
+          </div>
+          <div class="min-w-0 flex-1">
+            <span class="sponsor-domain-chip inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em]">
+              ${escapeHtml(sponsor.isInstagram ? labels.instagram : sponsor.hostname)}
+            </span>
+            <h3 class="mt-3 text-xl font-display text-white md:text-2xl">${escapeHtml(sponsor.name)}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-white/60">${escapeHtml(sponsor.shortDescriptionText || "")}</p>
+            ${sponsor.isInstagram ? `
+              <p class="mt-2 text-xs text-white/35">${escapeHtml(sponsor.displayUrl)}</p>
+            ` : ""}
+          </div>
+        </div>
+        ${(sponsor.offerText || sponsor.code) ? `
+          <div class="mt-4 flex flex-wrap gap-2">
+            ${sponsor.offerText ? `
+              <span class="text-sm font-medium text-white/80">
+                ${escapeHtml(sponsor.offerText)}
+              </span>
+            ` : ""}
+            ${sponsor.code ? `
+              <span class="sponsor-code-chip rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wide">
+                <code class="font-mono">${escapeHtml(sponsor.code)}</code>
+              </span>
+            ` : ""}
+          </div>
+        ` : ""}
+        <div class="mt-6 flex items-center justify-end text-sm">
+          <span class="font-medium text-accent transition group-hover:text-white">${escapeHtml(labels.visit)} →</span>
+        </div>
+      </a>
+    `;
+  }
+
+  const carousel = document.getElementById("sponsors-carousel");
+  const viewport = document.getElementById("sponsors-viewport");
+  const track = document.getElementById("sponsors-track");
+  const emptyState = document.getElementById("sponsors-empty");
+  
+  if (carousel && viewport && track && emptyState) {
+    const activeSponsors = shuffleSponsors(sponsorCatalog.filter(isSponsorActive));
+    const dragThreshold = 8;
+    let visibleSlides = getVisibleSlides();
+    let animationFrameId = 0;
+    let lastTimestamp = 0;
+    let currentOffset = 0;
+    let loopWidth = 0;
+    let isHovering = false;
+    let isPointerDown = false;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartOffset = 0;
+    let dragDistance = 0;
+    let suppressClickUntil = 0;
+    let activePointerId = null;
+    const pixelsPerSecond = 38;
+
+    function getLoopSponsors() {
+      if (activeSponsors.length <= 1) return activeSponsors;
+      return [...activeSponsors, ...activeSponsors];
+    }
+
+    function measureLoopWidth() {
+      if (activeSponsors.length <= 1) {
+        loopWidth = 0;
+        return;
+      }
+
+      const slides = track.querySelectorAll(".sponsor-slide");
+      const secondCycleFirstSlide = slides[activeSponsors.length];
+      if (!secondCycleFirstSlide) {
+        loopWidth = 0;
+        return;
+      }
+
+      loopWidth = secondCycleFirstSlide.offsetLeft;
+    }
+
+    function applyTrackPosition() {
+      track.style.transform = `translate3d(${currentOffset}px, 0, 0)`;
+    }
+
+    function normalizeOffset() {
+      if (loopWidth <= 0) {
+        currentOffset = 0;
+        return;
+      }
+
+      while (currentOffset <= -loopWidth) {
+        currentOffset += loopWidth;
+      }
+
+      while (currentOffset > 0) {
+        currentOffset -= loopWidth;
+      }
+    }
+
+    function stopAnimation() {
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+        animationFrameId = 0;
+      }
+    }
+
+    function tick(timestamp) {
+      if (!lastTimestamp) lastTimestamp = timestamp;
+
+      const delta = timestamp - lastTimestamp;
+      lastTimestamp = timestamp;
+
+      if (!isHovering && !isDragging && loopWidth > 0) {
+        currentOffset -= (pixelsPerSecond * delta) / 1000;
+        normalizeOffset();
+        applyTrackPosition();
+      }
+
+      animationFrameId = window.requestAnimationFrame(tick);
+    }
+
+    function startAnimation() {
+      stopAnimation();
+
+      if (loopWidth <= 0) {
+        currentOffset = 0;
+        applyTrackPosition();
+        return;
+      }
+
+      lastTimestamp = 0;
+      animationFrameId = window.requestAnimationFrame(tick);
+    }
+
+    function handleResize() {
+      const nextVisibleSlides = getVisibleSlides();
+      visibleSlides = nextVisibleSlides;
+      carousel.style.setProperty("--visible-slides", String(Math.min(Math.max(activeSponsors.length, 1), visibleSlides)));
+      measureLoopWidth();
+      normalizeOffset();
+      applyTrackPosition();
+    }
+
+    function getWheelDistance(event) {
+      const rawDelta = Math.abs(event.deltaX) > 0 ? event.deltaX : (event.shiftKey ? event.deltaY : 0);
+      if (!rawDelta) return 0;
+
+      if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) {
+        return rawDelta * 18;
+      }
+
+      if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) {
+        return rawDelta * Math.max(viewport.clientWidth * 0.85, 1);
+      }
+
+      return rawDelta;
+    }
+
+    function handleWheel(event) {
+      if (loopWidth <= 0) return;
+
+      const wheelDistance = getWheelDistance(event);
+      if (!wheelDistance) return;
+
+      event.preventDefault();
+      currentOffset -= wheelDistance;
+      lastTimestamp = 0;
+      normalizeOffset();
+      applyTrackPosition();
+    }
+
+    function handlePointerDown(event) {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      if (loopWidth <= 0) return;
+
+      isPointerDown = true;
+      isDragging = false;
+      dragStartX = event.clientX;
+      dragStartOffset = currentOffset;
+      dragDistance = 0;
+      activePointerId = event.pointerId;
+      lastTimestamp = 0;
+    }
+
+    function handlePointerMove(event) {
+      if (!isPointerDown || event.pointerId !== activePointerId) return;
+
+      const deltaX = event.clientX - dragStartX;
+      const nextDragDistance = Math.abs(deltaX);
+
+      if (!isDragging) {
+        if (nextDragDistance < dragThreshold) return;
+
+        isDragging = true;
+        viewport.classList.add("is-dragging");
+        viewport.setPointerCapture?.(event.pointerId);
+      }
+
+      dragDistance = Math.max(dragDistance, nextDragDistance);
+      currentOffset = dragStartOffset + deltaX;
+      normalizeOffset();
+      applyTrackPosition();
+    }
+
+    function stopDragging(pointerId) {
+      if (activePointerId === null) return;
+      if (pointerId !== null && pointerId !== undefined && pointerId !== activePointerId) return;
+
+      const releasedPointerId = activePointerId;
+      const didDrag = isDragging && dragDistance >= dragThreshold;
+
+      isPointerDown = false;
+      isDragging = false;
+      activePointerId = null;
+      viewport.classList.remove("is-dragging");
+
+      if (didDrag) {
+        suppressClickUntil = Date.now() + 250;
+      }
+
+      if (didDrag && viewport.hasPointerCapture?.(releasedPointerId)) {
+        viewport.releasePointerCapture?.(releasedPointerId);
+      }
+
+      dragDistance = 0;
+      normalizeOffset();
+      applyTrackPosition();
+    }
+
+    function handleViewportClick(event) {
+      if (Date.now() > suppressClickUntil) return;
+
+      const target = event.target instanceof Element ? event.target.closest("a") : null;
+      if (!target) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      suppressClickUntil = 0;
+    }
+
+    if (activeSponsors.length === 0) {
+      track.innerHTML = "";
+      emptyState.classList.remove("hidden");
+      stopAnimation();
+    } else {
+      emptyState.classList.add("hidden");
+      track.innerHTML = getLoopSponsors().map((sponsor) => renderCard(sponsor)).join("");
+      carousel.style.setProperty("--visible-slides", String(Math.min(activeSponsors.length, visibleSlides)));
+      measureLoopWidth();
+      currentOffset = 0;
+      applyTrackPosition();
+      startAnimation();
+
+      viewport.addEventListener("mouseenter", () => {
+        isHovering = true;
+      });
+      viewport.addEventListener("mouseleave", () => {
+        isHovering = false;
+      });
+      viewport.addEventListener("pointerdown", handlePointerDown);
+      viewport.addEventListener("pointermove", handlePointerMove);
+      viewport.addEventListener("pointerup", (event) => stopDragging(event.pointerId));
+      viewport.addEventListener("pointercancel", (event) => stopDragging(event.pointerId));
+      viewport.addEventListener("lostpointercapture", () => stopDragging(activePointerId));
+      viewport.addEventListener("click", handleViewportClick, true);
+      viewport.addEventListener("wheel", handleWheel, { passive: false });
+      window.addEventListener("resize", handleResize);
+    }
+  }
+</script>
 
 <style>
   .scam-marquee {
     display: inline-flex;
     animation: scam-scroll 25s linear infinite;
   }
+
+  :global(#sponsors-carousel) {
+    --visible-slides: 3;
+  }
+
+  :global(#sponsors-carousel [data-sponsors-viewport]) {
+    cursor: grab;
+    touch-action: pan-y;
+  }
+
+  :global(#sponsors-carousel [data-sponsors-viewport].is-dragging) {
+    cursor: grabbing;
+  }
+
+  :global(#sponsors-carousel .sponsor-slide) {
+    width: calc((100% - (var(--visible-slides) - 1) * 1.5rem) / var(--visible-slides));
+  }
+
+  :global(#sponsors-carousel .sponsor-icon-chip) {
+    border: 1px solid var(--sponsor-accent-border);
+    background-color: var(--sponsor-accent-soft);
+    background-image: var(--sponsor-logo);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    color: var(--sponsor-accent);
+    box-shadow: 0 12px 32px var(--sponsor-accent-glow);
+  }
+
+  :global(#sponsors-carousel .sponsor-domain-chip),
+  :global(#sponsors-carousel .sponsor-code-chip) {
+    border-color: var(--sponsor-accent-border);
+    background: var(--sponsor-accent-soft);
+    color: var(--sponsor-accent);
+  }
+
   @keyframes scam-scroll {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }

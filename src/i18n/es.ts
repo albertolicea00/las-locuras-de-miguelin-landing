@@ -54,7 +54,7 @@ export const es = {
     event: "PRÓXIMO EVENTO 🎟",
     eventLabel: "En vivo",
     sponsors: "PATROCINADORES 🤝",
-    sponsorsLabel: "Ofertas exclusivas",
+    sponsorsLabel: "Marcas aliadas",
     social: "REDES SOCIALES 📱",
     socialLabel: "Síguenos",
   },

@@ -24,15 +24,6 @@ export interface Character {
   featuredEpisodes: { number: number; title: string; topic: string }[];
 }
 
-export interface Sponsor {
-  name: string;
-  description: string;
-  discount: string;
-  code: string;
-  link: string;
-  img: string;
-}
-
 export interface Episode {
   number: number;
   title: string;
@@ -301,12 +292,6 @@ const DATA_ES = {
     description: "El podcast en vivo con todo el crew y invitados sorpresa. Una noche de locuras, risas y mucho más.",
     link: "#",
   } satisfies Event,
-
-  sponsors: [
-    { name: "Sponsor Ejemplo 1", description: "Descripción del patrocinador", discount: "20% OFF", code: "MIGUELIN20", link: "#", img: "https://placehold.co/300x200/111111/FF0055?text=Sponsor+1" },
-    { name: "Sponsor Ejemplo 2", description: "Descripción del patrocinador", discount: "15% OFF", code: "LOCURAS15", link: "#", img: "https://placehold.co/300x200/111111/00E5FF?text=Sponsor+2" },
-    { name: "Sponsor Ejemplo 3", description: "Descripción del patrocinador", discount: "10% OFF", code: "CREW10", link: "#", img: "https://placehold.co/300x200/111111/FFD600?text=Sponsor+3" },
-  ] satisfies Sponsor[],
 
   soundboard: [
     { text: "ASERE", emoji: "🔥" },

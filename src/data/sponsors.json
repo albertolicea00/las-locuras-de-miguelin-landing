@@ -1,0 +1,310 @@
+[
+  {
+    "id": "yes-travel",
+    "name": "Yes Travel",
+    "url": "https://yestravel.us/en/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#28C7B7",
+    "logoAsset": "/images/sponsors/yes-travel.png",
+    "offer": {
+      "es": "Hasta $150 de descuento en paquetes selectos",
+      "en": "Up to $150 off select packages"
+    },
+    "code": "YESMIGUELIN",
+    "shortDescription": {
+      "es": "Agencia de viajes y asistencia para planificar tu próxima escapada.",
+      "en": "Travel agency and support to plan your next getaway."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "puppies-by-z",
+    "name": "Puppies by Z",
+    "url": "https://puppiesbyz.com/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#FF7B9C",
+    "logoAsset": "/images/sponsors/puppies-by-z.png",
+    "offer": {
+      "es": "Kit de bienvenida gratis con tu reserva",
+      "en": "Free starter kit with your reservation"
+    },
+    "code": "PUPPYMIG",
+    "shortDescription": {
+      "es": "Puppies y acompañamiento para encontrar la mascota ideal.",
+      "en": "Puppies and guidance to find the right pet for your home."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "deco-trends-miami",
+    "name": "Deco Trends Miami",
+    "url": "https://decotrendsmiami.com/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#F97316",
+    "logoAsset": "/images/sponsors/deco-trends-miami.png",
+    "offer": {
+      "es": "15% off en tu primer proyecto",
+      "en": "15% off your first project"
+    },
+    "code": "DECOMIG15",
+    "shortDescription": {
+      "es": "Decoración y detalles para renovar cualquier espacio con estilo.",
+      "en": "Decor and details to refresh any space with style."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "hb-imperial-woodworks",
+    "name": "HB Imperial Woodworks",
+    "url": "https://hbimperialwoodworks.com/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#8B5E3C",
+    "logoAsset": "/images/sponsors/hb-imperial-woodworks.png",
+    "offer": {
+      "es": "Crédito de $250 en trabajos custom",
+      "en": "$250 credit on custom work"
+    },
+    "code": "WOODMIG250",
+    "shortDescription": {
+      "es": "Carpintería y trabajos en madera hechos a la medida.",
+      "en": "Custom carpentry and woodwork built to fit each project."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "closet-xperts",
+    "name": "Closet Xperts",
+    "url": "https://closetxperts.com/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#14B8A6",
+    "logoAsset": "/images/sponsors/closet-xperts.png",
+    "offer": {
+      "es": "Consulta de diseño gratis",
+      "en": "Free design consultation"
+    },
+    "code": "CLOSETMIG",
+    "shortDescription": {
+      "es": "Closets y soluciones inteligentes de organización para el hogar.",
+      "en": "Closets and smart storage solutions for your home."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "la-borla-gold",
+    "name": "La Borla Gold",
+    "url": "https://laborlagold.com/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#EAB308",
+    "logoAsset": "/images/sponsors/la-borla-gold.png",
+    "offer": {
+      "es": "10% off en piezas seleccionadas",
+      "en": "10% off select pieces"
+    },
+    "code": "BORLAMIG10",
+    "shortDescription": {
+      "es": "Joyas y accesorios con estilo para regalar o lucir.",
+      "en": "Jewelry and stylish accessories to gift or wear."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "renaissance-dental-clinic",
+    "name": "Renaissance Dental Clinic",
+    "url": "https://renaissancedentalclinic.com/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#38BDF8",
+    "logoAsset": "/images/sponsors/renaissance-dental-clinic.png",
+    "offer": {
+      "es": "Limpieza + consulta a precio especial",
+      "en": "Cleaning + consultation at a special price"
+    },
+    "code": "SMILEMIG",
+    "shortDescription": {
+      "es": "Clínica dental con tratamientos y cuidado integral.",
+      "en": "Dental clinic with treatments and comprehensive care."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "la-tienda-de-nena",
+    "name": "La Tienda de Nena",
+    "url": "http://latiendadenena.com/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#EC4899",
+    "logoAsset": "/images/sponsors/la-tienda-de-nena.png",
+    "offer": {
+      "es": "10% off en tu primera orden",
+      "en": "10% off your first order"
+    },
+    "code": "NENA10",
+    "shortDescription": {
+      "es": "Tienda online con productos variados para la familia.",
+      "en": "Online shop with a wide variety of products for the family."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "pronyr",
+    "name": "Pronyr TV",
+    "url": "https://pronyr.com/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#6366F1",
+    "logoAsset": "/images/sponsors/pronyr.png",
+    "offer": {
+      "es": "Asesoría inicial gratis",
+      "en": "Free initial consultation"
+    },
+    "code": "PRONYRMIG",
+    "shortDescription": {
+      "es": "Servicios y soluciones profesionales para clientes y negocios.",
+      "en": "Professional services and solutions for clients and businesses."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "perico-energy",
+    "name": "Perico Energy",
+    "url": "https://www.perico.energy/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#22C55E",
+    "logoAsset": "/images/sponsors/perico-energy.png",
+    "offer": {
+      "es": "15% off en cajas seleccionadas",
+      "en": "15% off selected packs"
+    },
+    "code": "PERICO15",
+    "shortDescription": {
+      "es": "Energía y actitud para mantenerte activo todo el día.",
+      "en": "Energy and attitude to keep you going all day."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "ceci-roses",
+    "name": "Ceci Roses",
+    "url": "https://ceciroses.com/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#FB7185",
+    "logoAsset": "/images/sponsors/ceci-roses.png",
+    "offer": {
+      "es": "$20 off en arreglos premium",
+      "en": "$20 off premium arrangements"
+    },
+    "code": "ROSESMIG",
+    "shortDescription": {
+      "es": "Arreglos florales y detalles especiales para cada ocasión.",
+      "en": "Floral arrangements and special details for every occasion."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "arlys-beauty",
+    "name": "Arlys Beauty",
+    "url": "https://www.arlysbeauty.com/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#A855F7",
+    "logoAsset": "/images/sponsors/arlys-beauty.png",
+    "offer": {
+      "es": "15% off en tu primer servicio",
+      "en": "15% off your first service"
+    },
+    "code": "ARLYS15",
+    "shortDescription": {
+      "es": "Belleza, cuidado personal y servicios estéticos.",
+      "en": "Beauty, self-care, and aesthetic services."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "chucherias-cubanas",
+    "name": "Chucherias Cubanas",
+    "url": "https://www.chucheriascubanas.com/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#F59E0B",
+    "logoAsset": "/images/sponsors/chucherias-cubanas.png",
+    "offer": {
+      "es": "10% off comprando online",
+      "en": "10% off online orders"
+    },
+    "code": "CHUCHI10",
+    "shortDescription": {
+      "es": "Dulces, antojos y sabores cubanos en un solo lugar.",
+      "en": "Cuban sweets, cravings, and flavors all in one place."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  },
+  {
+    "id": "as-laser-deluxe",
+    "name": "AS Laser Deluxe",
+    "url": "https://www.instagram.com/as_laserdeluxe/",
+    "enabled": true,
+    "expiresAt": null,
+    "accentColor": "#06B6D4",
+    "logoAsset": "/images/sponsors/as-laser-deluxe.png",
+    "offer": {
+      "es": "Descuento en tu primera sesión",
+      "en": "Discount on your first session"
+    },
+    "code": "LASERMIG",
+    "shortDescription": {
+      "es": "Tratamientos láser y cuidado estético personalizado.",
+      "en": "Laser treatments and personalized aesthetic care."
+    },
+    "internalNote": {
+      "es": "Oferta y código de ejemplo. Reemplazar por datos reales antes de publicar.",
+      "en": "Sample offer and code. Replace with real deal details before publishing."
+    }
+  }
+]
