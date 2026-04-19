@@ -49,20 +49,45 @@ export async function fetchInstagramDataClient(
     console.warn("[IG Client] Cache read error", e);
   }
 
-  // 2. Fetch from Instagram (Client IP)
+  // 2. Fetch from Instagram via CORS proxy (Client IP)
   try {
     console.log(`[IG Client] Fetching @${username} from browser...`);
-    const response = await fetch(
-      `https://www.instagram.com/api/v1/users/web_profile_info/?username=${username}`,
-      { headers: HEADERS },
-    );
+    
+    const igUrl = `https://www.instagram.com/api/v1/users/web_profile_info/?username=${username}`;
+    
+    // Try multiple CORS proxy options
+    const proxyUrls = [
+      `https://corsproxy.io/?${encodeURIComponent(igUrl)}`,
+      `https://api.allorigins.win/raw?url=${encodeURIComponent(igUrl)}`,
+    ];
 
-    if (response.status === 429) {
-      console.warn(`[IG Client] Rate limited for @${username}`);
-      return null;
+    let response: Response | null = null;
+    
+    for (const proxyUrl of proxyUrls) {
+      try {
+        const r = await fetch(proxyUrl, {
+          headers: {
+            ...HEADERS,
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          },
+        });
+        if (r.ok) {
+          response = r;
+          break;
+        }
+        if (r.status === 429) {
+          console.warn(`[IG Client] Rate limited for @${username}`);
+          return null;
+        }
+      } catch {
+        continue; // try next proxy
+      }
     }
 
-    if (!response.ok) return null;
+    if (!response) {
+      console.warn(`[IG Client] All proxies failed for @${username}`);
+      return null;
+    }
 
     const json = await response.json();
     const user = json?.data?.user;

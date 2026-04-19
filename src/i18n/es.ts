@@ -29,6 +29,7 @@ export const es = {
       "El podcast de la vida. Humor cubano, drama, chismes y las locuras que solo Miami puede dar.",
     watchLatest: "▶ Ver último episodio",
     subscribe: "Suscribirse",
+    sponsor: "🤝 PATROCINAR",
     podcastSet: "SET DEL PODCAST",
     episodesCount: "+65 EPISODIOS",
   },
@@ -165,6 +166,26 @@ export const es = {
         ],
       },
     ],
+  },
+
+  // -- Sponsor Page --
+  sponsorPage: {
+    heroTitle: "TU MARCA EN EL SHOW MÁS LOCO 🚀",
+    heroSubtitle: "No solo te anuncias, te conviertes en parte de la locura. Llegamos a millones de cubanos en Miami y el mundo entero.",
+    storyTitle: "¿Por qué con nosotros?",
+    story1: "Miguelín no solo lee tu guion, le mete su chispa y la gente se queda con el nombre de tu marca grabado.",
+    story2: "Nuestra audiencia es real, activa y fiel. Si sale en Las Locuras, Miami se entera.",
+    story3: "Olvídate de comerciales aburridos. Aquí creamos momentos virales con tu producto.",
+    plansTitle: "NUESTROS PLANES",
+    plan1: "Básico (Mención en el show)",
+    plan2: "Viral (Segmento dedicado + Redes)",
+    plan3: "Elite (Patrocinio oficial + Presencia en el set)",
+    formTitle: "DALE GAS A TU NEGOCIO",
+    formSubtitle: "Déjanos tus datos y nuestro equipo de producción se pondrá en contacto contigo.",
+    formName: "Nombre de tu empresa / Marca",
+    formEmail: "Email profesional",
+    formMessage: "Cuéntanos qué quieres promocionar...",
+    formSubmit: "DALE QUE LA VIDA ES UNA (ENVIAR)",
   },
 
   // -- Locuras (meme generator) --

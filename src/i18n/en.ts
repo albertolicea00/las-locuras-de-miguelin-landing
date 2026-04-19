@@ -29,6 +29,7 @@ export const en = {
       "El podcast de la vida. Cuban humor, drama, gossip and the craziness that only Miami can deliver.",
     watchLatest: "▶ Watch latest episode",
     subscribe: "Subscribe",
+    sponsor: "🤝 SPONSOR",
     podcastSet: "PODCAST SET",
     episodesCount: "+65 EPISODES",
   },
@@ -158,6 +159,26 @@ export const en = {
         ],
       },
     ],
+  },
+
+  // -- Sponsor Page --
+  sponsorPage: {
+    heroTitle: "YOUR BRAND ON THE CRAZIEST SHOW 🚀",
+    heroSubtitle: "Don't just advertise, become part of the craziness. We reach millions of Cubans in Miami and across the globe.",
+    storyTitle: "Why sponsor us?",
+    story1: "Miguelin doesn't just read your script, he adds his spark and people remember your brand name.",
+    story2: "Our audience is real, active, and loyal. If it's on Las Locuras, Miami knows about it.",
+    story3: "Forget boring commercials. Here we create viral moments with your product.",
+    plansTitle: "OUR PLANS",
+    plan1: "Basic (On-show mention)",
+    plan2: "Viral (Dedicated segment + Social media)",
+    plan3: "Elite (Official sponsorship + On-set presence)",
+    formTitle: "BOOST YOUR BUSINESS",
+    formSubtitle: "Leave us your details and our production team will get in touch with you.",
+    formName: "Company / Brand Name",
+    formEmail: "Business Email",
+    formMessage: "Tell us what you want to promote...",
+    formSubmit: "SUBMIT",
   },
 
   // -- Locuras (meme generator) --

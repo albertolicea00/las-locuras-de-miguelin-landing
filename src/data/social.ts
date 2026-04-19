@@ -6,6 +6,11 @@ export const SHOW_SOCIALS = {
   youtube: "https://www.youtube.com/@laslocurasdemiguelin4300",
   facebook: "https://www.facebook.com/locurasdemiguelin",
   instagram: "https://www.instagram.com/miguelindavid/",
+  stats: {
+    youtube: "124K",
+    facebook: "480K",
+    instagram: "645K",
+  }
 } as const;
 
 export const CHARACTER_SOCIALS: Record<string, { instagram: string; tiktok: string; youtube?: string; facebook?: string }> = {
