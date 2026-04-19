@@ -1,0 +1,193 @@
+---
+import type { Locale } from "../i18n/utils";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+  lang: Locale;
+  channelId?: string | null;
+}
+
+const { lang, channelId: initialChannelId = null } = Astro.props;
+const t = useTranslations(lang);
+
+const apiKey = import.meta.env.PUBLIC_YOUTUBE_API_KEY || "";
+const channelId =
+  import.meta.env.PUBLIC_YOUTUBE_CHANNEL_ID ||
+  import.meta.env.YOUTUBE_CHANNEL_ID ||
+  initialChannelId ||
+  "";
+
+const labels = {
+  watchOnYoutube: t.actions.watchOnYoutube,
+  views: t.characterPage.views,
+  upcoming: t.characterPage.upcoming,
+  membersOnly: t.characterPage.membersOnly,
+  live: t.characterPage.live,
+  videosBadgeSuffix: "VIDEOS",
+};
+---
+
+<script define:vars={{ apiKey, channelId, labels }}>
+  import { fetchAllYouTubeDataClient } from "../services/youtube-client";
+
+  function escapeHtml(value = "") {
+    return value
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function createStatusBadge(status) {
+    if (!status || status === "published") return null;
+
+    const badge = document.createElement("span");
+    badge.dataset.statusBadge = "true";
+    badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider";
+
+    if (status === "upcoming") {
+      badge.classList.add("bg-blue-600", "text-white", "animate-pulse");
+      badge.textContent = labels.upcoming;
+      return badge;
+    }
+
+    if (status === "members-only") {
+      badge.classList.add("bg-amber-500", "text-black");
+      badge.textContent = labels.membersOnly;
+      return badge;
+    }
+
+    if (status === "live") {
+      badge.classList.add("bg-red-600", "text-white", "animate-pulse");
+      badge.textContent = labels.live;
+      return badge;
+    }
+
+    return null;
+  }
+
+  function updateHeroBadge(channel) {
+    const badge = document.getElementById("hero-video-count-badge");
+    if (!badge || !channel?.videoCount) return;
+
+    const count = Number.parseInt(channel.videoCount, 10);
+    if (!Number.isFinite(count) || count <= 0) return;
+
+    badge.textContent = `+${count} ${labels.videosBadgeSuffix}`;
+  }
+
+  function updateLatestEpisode(video) {
+    if (!video) return;
+
+    const media = document.getElementById("latest-episode-media");
+    const title = document.getElementById("latest-episode-title");
+    const titleRow = document.getElementById("latest-episode-title-row");
+    const meta = document.getElementById("latest-episode-meta");
+    const link = document.getElementById("latest-episode-link");
+
+    if (!media || !title || !titleRow || !meta || !link) return;
+
+    media.innerHTML = `
+      <iframe
+        src="${escapeHtml(video.embedUrl)}?rel=0"
+        title="${escapeHtml(video.title)}"
+        class="w-full h-full"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    `;
+
+    title.textContent = video.title;
+    titleRow.querySelector("[data-status-badge]")?.remove();
+    const statusBadge = createStatusBadge(video.status);
+    if (statusBadge) titleRow.appendChild(statusBadge);
+
+    const metaParts = [];
+    if (video.duration) metaParts.push(`<span>⏱ ${escapeHtml(video.duration)}</span>`);
+    if (video.viewCount && video.status !== "upcoming") {
+      metaParts.push(`<span>👁 ${escapeHtml(video.viewCount)} ${escapeHtml(labels.views)}</span>`);
+    }
+
+    meta.innerHTML = metaParts.join("");
+    link.href = `https://www.youtube.com/watch?v=${encodeURIComponent(video.id)}`;
+  }
+
+  function renderViralCards(videos) {
+    return videos.map((video) => {
+      const statsParts = [`👁 ${escapeHtml(video.viewCount)}`];
+      if (video.likeCount && video.likeCount !== "0") {
+        statsParts.push(`❤️ ${escapeHtml(video.likeCount)}`);
+      }
+
+      const statusBadge = video.status === "upcoming"
+        ? `<div class="bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-lg uppercase animate-pulse">${escapeHtml(labels.upcoming)}</div>`
+        : video.status === "members-only"
+          ? `<div class="bg-amber-500 text-black text-[10px] font-bold px-2 py-1 rounded-lg uppercase">${escapeHtml(labels.membersOnly)}</div>`
+          : video.status === "live"
+            ? `<div class="bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-lg uppercase animate-pulse">${escapeHtml(labels.live)}</div>`
+            : "";
+
+      const duration = video.duration
+        ? `<div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm">${escapeHtml(video.duration)}</div>`
+        : "";
+
+      return `
+        <a href="https://www.youtube.com/watch?v=${encodeURIComponent(video.id)}" target="_blank" rel="noopener noreferrer" class="card-episode cursor-pointer group block">
+          <div class="relative overflow-hidden">
+            <img src="${escapeHtml(video.thumbnail)}" alt="${escapeHtml(video.title)}" class="w-full aspect-video object-cover group-hover:scale-110 transition duration-500" loading="lazy" />
+            <div class="absolute top-3 left-3 flex flex-col gap-1 items-start">
+              <div class="bg-primary text-white text-xs font-bold px-2 py-1 rounded-lg">
+                ${escapeHtml(video.viewCount)} ${escapeHtml(labels.views)}
+              </div>
+              ${statusBadge}
+            </div>
+            ${duration}
+            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 flex items-center justify-center transition">
+              <div class="w-12 h-12 bg-primary/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-white font-semibold mt-1 line-clamp-2">${escapeHtml(video.title)}</h3>
+            <p class="text-white/40 text-sm mt-1">${statsParts.join(" · ")}</p>
+          </div>
+        </a>
+      `;
+    }).join("");
+  }
+
+  function updateViralEpisodes(videos) {
+    if (!videos?.length) return;
+
+    const grid = document.getElementById("viral-episodes-grid");
+    if (!grid) return;
+
+    grid.innerHTML = renderViralCards(videos);
+  }
+
+  async function initYouTubeSync() {
+    if (!channelId) return;
+
+    const data = await fetchAllYouTubeDataClient({
+      apiKey,
+      channelId,
+      maxLatest: 12,
+      maxPopular: 6,
+    });
+
+    if (!data) return;
+
+    updateHeroBadge(data.channel);
+    updateLatestEpisode(data.latestVideos?.[0] || null);
+    updateViralEpisodes(data.popularVideos || []);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initYouTubeSync, { once: true });
+  } else {
+    initYouTubeSync();
+  }
+</script>

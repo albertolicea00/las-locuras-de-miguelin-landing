@@ -74,11 +74,9 @@ const episodeBadge = videoCount > 0
           <img src="/logo.jpg" alt="Las Locuras de Miguelín" class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent"></div>
         </div>
-        {videoCount > 0 && (
-          <div class="absolute -top-4 -right-4 bg-primary text-white font-display text-lg px-4 py-2 rounded-xl shadow-lg shadow-primary/40 animate-float">
-            {episodeBadge}
-          </div>
-        )}
+        <div id="hero-video-count-badge" class="absolute -top-4 -right-4 bg-primary text-white font-display text-lg px-4 py-2 rounded-xl shadow-lg shadow-primary/40 animate-float">
+          {episodeBadge}
+        </div>
         <div class="absolute -bottom-4 -left-4 bg-accent text-dark font-display text-lg px-4 py-2 rounded-xl shadow-lg shadow-accent/40 animate-float" style="animation-delay: 1.5s;">
           MIAMI
         </div>

@@ -52,24 +52,12 @@ const marqueeText = `⚠️ ${t.scamWarning.message} — ${t.scamWarning.tip} �
       ))}
     </div>
 
-    <!-- Sponsor Contact Form -->
-    <div class="mt-16 max-w-2xl mx-auto text-center">
-      <h3 class="font-display text-2xl text-white mb-2">
-        {lang === "es" ? "¿Quieres ser patrocinador?" : "Want to be a sponsor?"}
-      </h3>
-      <p class="text-white/40 text-sm mb-6">
-        {lang === "es" ? "Contacta con nosotros para promocionar tu marca en el podcast" : "Contact us to promote your brand on the podcast"}
-      </p>
-      <div class="bg-secondary rounded-2xl border border-white/10 p-8 opacity-60">
-        <div class="space-y-4">
-          <input type="text" disabled placeholder={lang === "es" ? "Nombre de tu empresa" : "Company name"} class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white/30 placeholder:text-white/20 cursor-not-allowed" />
-          <input type="email" disabled placeholder={lang === "es" ? "Email de contacto" : "Contact email"} class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white/30 placeholder:text-white/20 cursor-not-allowed" />
-          <textarea disabled rows="3" placeholder={lang === "es" ? "Cuéntanos sobre tu marca..." : "Tell us about your brand..."} class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white/30 placeholder:text-white/20 cursor-not-allowed resize-none"></textarea>
-        </div>
-        <button disabled class="mt-6 inline-block bg-white/10 text-white/30 font-semibold px-8 py-4 rounded-xl cursor-not-allowed text-lg border border-white/10">
-          {lang === "es" ? "Próximamente" : "Coming Soon"}
-        </button>
-      </div>
+    <!-- Link to Sponsor Page -->
+    <div class="mt-16 text-center">
+      <a href={lang === "es" ? "/patrocinar" : "/en/patrocinar"} class="inline-flex items-center gap-2 bg-neon-purple/20 hover:bg-neon-purple/40 text-neon-purple border border-neon-purple/30 hover:border-neon-purple/60 font-semibold px-8 py-4 rounded-xl transition text-lg">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        {lang === "es" ? "¿Quieres patrocinar el show?" : "Want to sponsor the show?"}
+      </a>
     </div>
   </div>
 </section>

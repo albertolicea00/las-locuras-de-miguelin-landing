@@ -33,7 +33,7 @@ const embedUrl = hasLive ? liveVideo!.embedUrl : "";
     <div class="max-w-4xl mx-auto">
       {hasLive ? (
         <!-- Real YouTube Embed -->
-        <div class="relative rounded-2xl overflow-hidden neon-border aspect-video bg-secondary">
+        <div id="latest-episode-media" class="relative rounded-2xl overflow-hidden neon-border aspect-video bg-secondary">
           <iframe
             src={`${embedUrl}?rel=0`}
             title={title}
@@ -45,7 +45,7 @@ const embedUrl = hasLive ? liveVideo!.embedUrl : "";
         </div>
       ) : (
         <!-- Fallback static thumbnail -->
-        <div class="relative rounded-2xl overflow-hidden neon-border aspect-video bg-secondary">
+        <div id="latest-episode-media" class="relative rounded-2xl overflow-hidden neon-border aspect-video bg-secondary">
           <img src={thumbnail} alt={title} class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-black/40 flex items-center justify-center group cursor-pointer hover:bg-black/20 transition">
             <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center group-hover:scale-110 transition neon-glow">
@@ -56,27 +56,27 @@ const embedUrl = hasLive ? liveVideo!.embedUrl : "";
       )}
       <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <div class="flex items-center gap-2 mb-2">
-            <h3 class="text-2xl font-bold text-white">{title}</h3>
+          <div id="latest-episode-title-row" class="flex items-center gap-2 mb-2">
+            <h3 id="latest-episode-title" class="text-2xl font-bold text-white">{title}</h3>
             {hasLive && liveVideo!.status === "upcoming" && (
-              <span class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
+              <span data-status-badge="true" class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
                 {t.characterPage.upcoming}
               </span>
             )}
             {hasLive && liveVideo!.status === "members-only" && (
-              <span class="bg-amber-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+              <span data-status-badge="true" class="bg-amber-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                 {t.characterPage.membersOnly}
               </span>
             )}
           </div>
-          <div class="flex gap-4 mt-2 text-white/50 text-sm">
+          <div id="latest-episode-meta" class="flex gap-4 mt-2 text-white/50 text-sm">
             {duration && <span>⏱ {duration}</span>}
             {views && !(hasLive && liveVideo!.status === "upcoming") && <span>👁 {views} {t.characterPage.views}</span>}
             {!hasLive && <span>🎤 {fallback.guest}</span>}
             {!hasLive && <span>💬 {fallback.topic}</span>}
           </div>
         </div>
-        <a href={videoUrl} target="_blank" rel="noopener noreferrer" class="bg-primary/20 hover:bg-primary text-primary hover:text-white border border-primary/30 px-6 py-3 rounded-xl font-medium transition">
+        <a id="latest-episode-link" href={videoUrl} target="_blank" rel="noopener noreferrer" class="bg-primary/20 hover:bg-primary text-primary hover:text-white border border-primary/30 px-6 py-3 rounded-xl font-medium transition">
           {t.actions.watchOnYoutube}
         </a>
       </div>

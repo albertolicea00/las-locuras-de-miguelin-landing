@@ -11,6 +11,7 @@ import ViralEpisodesSection from "../components/ViralEpisodesSection.astro";
 import CrewSection from "../components/CrewSection.astro";
 import EventSection from "../components/EventSection.astro";
 import SponsorsSection from "../components/SponsorsSection.astro";
+import YouTubeLiveSync from "../components/YouTubeLiveSync.astro";
 // import SocialSection from "../components/SocialSection.astro"; // Hidden for now
 import ScamPopup from "../components/ScamPopup.astro";
 
@@ -32,6 +33,7 @@ const profilePics = await fetchAllProfilePics(allChars);
   <CrewSection lang={lang} profilePics={profilePics} />
   <EventSection lang={lang} />
   <SponsorsSection lang={lang} />
+  <YouTubeLiveSync lang={lang} channelId={ytData.channel?.id ?? null} />
   <!-- SocialSection hidden for now -->
   <ScamPopup lang={lang} />
 </BaseLayout>

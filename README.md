@@ -41,6 +41,8 @@ This landing page is built to provide a stunning and fluid visual experience, in
 
 3. **Environment Variables:**
    Create a `.env` file based on `.env.example` and add your API keys (YouTube, etc.).
+   For static deployments, also set `PUBLIC_YOUTUBE_API_KEY` and `PUBLIC_YOUTUBE_CHANNEL_ID`
+   if you want the homepage to refresh the latest YouTube videos on page load without waiting for a new build.
 
 4. **Start the development server:**
 
